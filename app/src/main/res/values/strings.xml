@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Mappis</string>
+    <string name="create_map">Create map</string>
 </resources>
