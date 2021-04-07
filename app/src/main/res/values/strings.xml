@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Mappis</string>
     <string name="create_map">Create map</string>
+    <string name="map_name">Map Name</string>
+    <string name="map_description">Map description</string>
+    <string name="settings">Settings</string>
 </resources>
