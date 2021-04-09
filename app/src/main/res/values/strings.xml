@@ -4,4 +4,8 @@
     <string name="map_name">Map Name</string>
     <string name="map_description">Map description</string>
     <string name="settings">Settings</string>
+    <string name="insert_map_name">Insert map name</string>
+    <string name="insert_short_description">Insert short description</string>
+    <string name="create_new_map">Create new map</string>
+    <string name="your_maps">Your maps</string>
 </resources>
