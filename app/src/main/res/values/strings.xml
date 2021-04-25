@@ -8,4 +8,5 @@
     <string name="insert_short_description">Insert short description</string>
     <string name="create_new_map">Create new map</string>
     <string name="your_maps">Your maps</string>
+    <string name="my_location_button">My location button</string>
 </resources>
