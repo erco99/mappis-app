@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
+
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
@@ -71,6 +73,7 @@ public class MapFragment extends Fragment implements LocationListener {
         mMapView.getOverlays().add(this.mLocationOverlay);
         mMapView.getOverlays().add(this.mCompassOverlay);
         mMapView.getOverlays().add(this.mScaleBarOverlay);
+        mMapView.setTileSource(TileSourceFactory.MAPNIK);
 
         mLocationOverlay.enableMyLocation();
         mLocationOverlay.enableFollowLocation();
@@ -84,7 +87,6 @@ public class MapFragment extends Fragment implements LocationListener {
                 mMapView.getController().animateTo(myPosition);
             }
         });
-
     }
 
     @Override
@@ -103,7 +105,21 @@ public class MapFragment extends Fragment implements LocationListener {
     @Override
     public void onResume() {
         super.onResume();
-        mMapView.onResume();
+        lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        try {
+            //this fails on AVD 19s, even with the appcompat check, says no provided named gps is available
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0l, 0f, this);
+        } catch (Exception ex) {
+        }
+
+        try {
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0l, 0f, this);
+        } catch (Exception ex) {
+        }
+
+        mLocationOverlay.enableFollowLocation();
+        mLocationOverlay.enableMyLocation();
+        mScaleBarOverlay.disableScaleBar();
     }
 
 
@@ -117,7 +133,6 @@ public class MapFragment extends Fragment implements LocationListener {
         super.onDestroyView();
         lm = null;
         currentLocation = null;
-
         mLocationOverlay = null;
         mCompassOverlay = null;
         mScaleBarOverlay = null;
