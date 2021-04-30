@@ -1,6 +1,7 @@
 package com.example.mappis;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -9,16 +10,22 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
+import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
@@ -35,6 +42,8 @@ public class MapFragment extends Fragment implements LocationListener {
     protected ImageButton btCenterMap;
     private Location currentLocation = null;
     private LocationManager lm;
+
+    protected Button testButton;
 
     private MapView mMapView;
 
@@ -73,7 +82,7 @@ public class MapFragment extends Fragment implements LocationListener {
         mMapView.getOverlays().add(this.mLocationOverlay);
         mMapView.getOverlays().add(this.mCompassOverlay);
         mMapView.getOverlays().add(this.mScaleBarOverlay);
-        mMapView.setTileSource(TileSourceFactory.MAPNIK);
+        mMapView.setTileSource(TileSourceFactory.HIKEBIKEMAP);
 
         mLocationOverlay.enableMyLocation();
         mLocationOverlay.enableFollowLocation();
@@ -85,6 +94,23 @@ public class MapFragment extends Fragment implements LocationListener {
             if (currentLocation != null) {
                 GeoPoint myPosition = new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
                 mMapView.getController().animateTo(myPosition);
+            }
+        });
+        GeoPoint startPoint = new GeoPoint(44.1879, 12.1285);
+
+        Marker startMarker = new Marker(mMapView);
+        startMarker.setPosition(startPoint);
+        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        mMapView.getOverlays().add(startMarker);
+        mMapView.invalidate();
+        applyDraggableListener(startMarker);
+
+        testButton = view.findViewById(R.id.button);
+        testButton.setOnClickListener(v -> {
+            AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+            if (appCompatActivity != null){
+                IconShowFragment dialog = new IconShowFragment();
+                dialog.show(getParentFragmentManager(), "dialog");
             }
         });
     }
@@ -139,4 +165,22 @@ public class MapFragment extends Fragment implements LocationListener {
         mRotationGestureOverlay = null;
         btCenterMap = null;
     }
+
+    public static void applyDraggableListener(Marker poiMarker) {
+        poiMarker.setDraggable(true);
+        poiMarker.setOnMarkerDragListener(new Marker.OnMarkerDragListener() {
+            @Override
+            public void onMarkerDragStart(Marker marker) {}
+
+            @Override
+            public void onMarkerDragEnd(Marker marker) {
+                GeoPoint geopoint = marker.getPosition();
+                poiMarker.setDraggable(false);
+            }
+
+            @Override
+            public void onMarkerDrag(Marker marker) {}
+        });
+    }
+
 }
