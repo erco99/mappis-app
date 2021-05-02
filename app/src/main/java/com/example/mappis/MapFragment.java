@@ -1,7 +1,8 @@
 package com.example.mappis;
 
+import android.Manifest;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -10,18 +11,15 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -43,7 +41,9 @@ public class MapFragment extends Fragment implements LocationListener {
     private Location currentLocation = null;
     private LocationManager lm;
 
-    protected Button testButton;
+    protected ImageButton pencilButton;
+    protected ImageButton iconButton;
+    protected ImageButton textButton;
 
     private MapView mMapView;
 
@@ -96,23 +96,43 @@ public class MapFragment extends Fragment implements LocationListener {
                 mMapView.getController().animateTo(myPosition);
             }
         });
-        GeoPoint startPoint = new GeoPoint(44.1879, 12.1285);
 
-        Marker startMarker = new Marker(mMapView);
-        startMarker.setPosition(startPoint);
-        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        mMapView.getOverlays().add(startMarker);
-        mMapView.invalidate();
-        applyDraggableListener(startMarker);
 
-        testButton = view.findViewById(R.id.button);
-        testButton.setOnClickListener(v -> {
+
+
+
+
+        pencilButton = view.findViewById(R.id.pencil_button);
+        pencilButton.setOnClickListener(v -> {
             AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
             if (appCompatActivity != null){
-                IconShowFragment dialog = new IconShowFragment();
+                IconShowFragment dialog = new IconShowFragment(Utilities.pencil_type_icons,
+                        this.currentLocation, this.mMapView);
                 dialog.show(getParentFragmentManager(), "dialog");
             }
         });
+
+        iconButton = view.findViewById(R.id.icon_button);
+        iconButton.setOnClickListener(v -> {
+            AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+            if (appCompatActivity != null){
+                IconShowFragment dialog = new IconShowFragment(Utilities.drag_icons,
+                        this.currentLocation, this.mMapView);
+                dialog.show(getParentFragmentManager(), "dialog");
+            }
+        });
+
+        textButton = view.findViewById(R.id.text_button);
+        textButton.setOnClickListener(v -> {
+            AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+            if (appCompatActivity != null){
+                IconShowFragment dialog = new IconShowFragment(Utilities.text_icons,
+                        this.currentLocation, this.mMapView);
+                dialog.show(getParentFragmentManager(), "dialog");
+            }
+        });
+
+
     }
 
     @Override
@@ -166,21 +186,5 @@ public class MapFragment extends Fragment implements LocationListener {
         btCenterMap = null;
     }
 
-    public static void applyDraggableListener(Marker poiMarker) {
-        poiMarker.setDraggable(true);
-        poiMarker.setOnMarkerDragListener(new Marker.OnMarkerDragListener() {
-            @Override
-            public void onMarkerDragStart(Marker marker) {}
-
-            @Override
-            public void onMarkerDragEnd(Marker marker) {
-                GeoPoint geopoint = marker.getPosition();
-                poiMarker.setDraggable(false);
-            }
-
-            @Override
-            public void onMarkerDrag(Marker marker) {}
-        });
-    }
 
 }
