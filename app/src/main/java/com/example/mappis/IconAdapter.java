@@ -13,25 +13,22 @@ import android.widget.TextView;
 
 public class IconAdapter extends BaseAdapter {
     private Context context;
-    private String[] values;
-    private TextView prova;
     private int[] images;
+    ImageView image;
 
-
-    public IconAdapter(Context context, String[] values, int[] images) {
+    public IconAdapter(Context context, int[] images) {
         this.context = context;
-        this.values = values;
         this.images = images;
     }
 
     @Override
     public int getCount() {
-        return values.length;
+        return images.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return values[position];
+        return images[position];
     }
 
     @Override
@@ -45,13 +42,11 @@ public class IconAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.icon_list, null);
         }
+        
 
+        image = convertView.findViewById(R.id.image_icon);
 
-        prova = convertView.findViewById(R.id.prova);
-        ImageView img = convertView.findViewById(R.id.image_icon);
-
-        prova.setText(values[position]);
-        img.setImageResource(images[position]);
+        image.setImageResource(images[position]);
 
         return convertView;
     }
