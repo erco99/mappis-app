@@ -1,8 +1,6 @@
 package com.example.mappis;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -17,13 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
@@ -33,6 +31,13 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 public class MapFragment extends Fragment implements LocationListener {
 
+    private int PLAY = 1;
+    private int PAUSE = 0;
+    private int TRACK_NUMBER = 0;
+    private boolean newTrack;
+
+    private int TRACK_STATUS = PAUSE;
+
     private MyLocationNewOverlay mLocationOverlay;
     private CompassOverlay mCompassOverlay;
     private ScaleBarOverlay mScaleBarOverlay;
@@ -41,9 +46,13 @@ public class MapFragment extends Fragment implements LocationListener {
     private Location currentLocation = null;
     private LocationManager lm;
 
+    private TrackRecorder trackRecorder;
+
     protected ImageButton pencilButton;
     protected ImageButton iconButton;
     protected ImageButton textButton;
+
+    protected  ImageButton trackButton;
 
     private MapView mMapView;
 
@@ -52,6 +61,8 @@ public class MapFragment extends Fragment implements LocationListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.map_track, null);
         mMapView = v.findViewById(R.id.map);
+
+        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
         return v;
     }
@@ -76,6 +87,7 @@ public class MapFragment extends Fragment implements LocationListener {
         mRotationGestureOverlay.setEnabled(true);
 
         mMapView.getController().setZoom(15.0);
+        mMapView.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
         mMapView.setTilesScaledToDpi(true);
         mMapView.setMultiTouchControls(true);
         mMapView.setFlingEnabled(true);
@@ -89,6 +101,8 @@ public class MapFragment extends Fragment implements LocationListener {
         mLocationOverlay.setOptionsMenuEnabled(true);
         mCompassOverlay.enableCompass();
 
+        trackRecorder = new TrackRecorder(mMapView, view);
+
         btCenterMap = view.findViewById(R.id.ic_center_map);
         btCenterMap.setOnClickListener(v -> {
             if (currentLocation != null) {
@@ -97,11 +111,7 @@ public class MapFragment extends Fragment implements LocationListener {
             }
         });
 
-
-
-
-
-
+        //menu buttons
         pencilButton = view.findViewById(R.id.pencil_button);
         pencilButton.setOnClickListener(v -> {
             AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
@@ -132,6 +142,19 @@ public class MapFragment extends Fragment implements LocationListener {
             }
         });
 
+        //tracking button
+        trackButton = view.findViewById(R.id.track_button);
+        trackButton.setOnClickListener(v -> {
+            if(this.TRACK_STATUS == this.PLAY){
+                trackButton.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+                this.TRACK_STATUS = this.PAUSE;
+            } else if(this.TRACK_STATUS == this.PAUSE) {
+                trackButton.setImageResource(R.drawable.ic_baseline_pause_24);
+                this.TRACK_STATUS = this.PLAY;
+                newTrack = true;
+                TRACK_NUMBER++;
+            }
+        });
 
     }
 
@@ -172,6 +195,15 @@ public class MapFragment extends Fragment implements LocationListener {
     @Override
     public void onLocationChanged(@NonNull Location location) {
         this.currentLocation = location;
+        if (this.TRACK_STATUS == this.PLAY && !newTrack) {
+            trackRecorder.recordCurrentLocationInTrack("my_track" + TRACK_NUMBER,
+                    "My Track" + TRACK_NUMBER, new GeoPoint(this.currentLocation), false);
+        } else if(this.TRACK_STATUS == this.PLAY && newTrack) {
+            trackRecorder.recordCurrentLocationInTrack("my_track" + TRACK_NUMBER,
+                    "My Track" + TRACK_NUMBER, new GeoPoint(this.currentLocation), true);
+            newTrack = false;
+        }
+
     }
 
     @Override
@@ -185,6 +217,4 @@ public class MapFragment extends Fragment implements LocationListener {
         mRotationGestureOverlay = null;
         btCenterMap = null;
     }
-
-
 }
