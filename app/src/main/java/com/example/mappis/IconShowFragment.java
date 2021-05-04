@@ -22,7 +22,7 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
 
-public class IconShowFragment extends DialogFragment {
+public class    IconShowFragment extends DialogFragment {
 
     GridView gridView;
     Location currentLocation;
