@@ -87,6 +87,16 @@
             android:cropToPadding="true"
             android:src="@drawable/ic_baseline_my_location_24" />
 
+        <ImageButton
+            android:id="@+id/track_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:background="#00ffffff"
+            android:src="@drawable/ic_baseline_play_arrow_24" />
+
     </RelativeLayout>
 
 
