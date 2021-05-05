@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class Utilities {
 
-    static final int[] pencil_type_icons = {R.drawable.pencil, R.drawable.nature};
+    static final int[] pencil_type_icons = {R.drawable.nature};
     static final int[] drag_icons = {R.drawable.waves, R.drawable.lake};
     static final int[] text_icons = {};
 
