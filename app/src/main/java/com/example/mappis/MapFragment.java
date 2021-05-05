@@ -94,7 +94,7 @@ public class MapFragment extends Fragment implements LocationListener {
         mMapView.getOverlays().add(this.mLocationOverlay);
         mMapView.getOverlays().add(this.mCompassOverlay);
         mMapView.getOverlays().add(this.mScaleBarOverlay);
-        mMapView.setTileSource(TileSourceFactory.HIKEBIKEMAP);
+        mMapView.setTileSource(TileSourceFactory.OPEN_SEAMAP);
 
         mLocationOverlay.enableMyLocation();
         mLocationOverlay.enableFollowLocation();
