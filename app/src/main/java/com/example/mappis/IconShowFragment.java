@@ -1,6 +1,7 @@
 package com.example.mappis;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
@@ -47,13 +48,12 @@ public class    IconShowFragment extends DialogFragment {
         IconAdapter adapter = new IconAdapter(getActivity(), images);
         gridView.setAdapter(adapter);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                IconAdder iconAdder = new IconAdder(currentLocation, map, getActivity());
-                if(currentLocation != null) {
-                    iconAdder.insertIcon(images[position]);
-                }
+        gridView.setOnItemClickListener((parent, view1, position, id) -> {
+            IconAdder iconAdder = new IconAdder(currentLocation, map, getActivity());
+            if(currentLocation != null && images != Utilities.pencil_type_icons) {
+                iconAdder.insertIcon(images[position]);
+            } else if(currentLocation != null){
+                TrackRecorder.COLOR = Color.BLUE;
             }
         });
 
