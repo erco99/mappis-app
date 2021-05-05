@@ -24,6 +24,8 @@ public class TrackRecorder {
     protected MapView map;
     protected View view;
 
+    static int COLOR = Color.GRAY;
+
     protected FolderOverlay mKmlOverlay = null;
     public static KmlDocument mKmlDocument = new KmlDocument();
 
@@ -38,6 +40,7 @@ public class TrackRecorder {
         KmlTrack t;
         KmlFeature f = mKmlDocument.mKmlRoot.findFeatureId(trackId, false);
         if (f == null && newTrack)
+
             t = createTrack(trackId, trackName);
         else if (!(f instanceof KmlPlacemark))
             //id already defined but is not a PlaceMark
@@ -66,27 +69,14 @@ public class TrackRecorder {
         mKmlDocument.mKmlRoot.add(p);
         //set a color to this track by creating a style:
         Style s = new Style();
-        int color;
-        try {
-            color = Integer.parseInt(id);
-            color = color % TrackColor.length;
-            color = TrackColor[color];
-        } catch (NumberFormatException e) {
-            color = Color.RED-0x20000000;
-        }
 
-        color = Color.BLUE-0x300000;
-
-        s.mLineStyle = new LineStyle(color, 56.0f);
+        s.mLineStyle = new LineStyle(COLOR, 26.0f);
         String styleId = mKmlDocument.addStyle(s);
         p.mStyle = styleId;
         return t;
     }
 
 
-    static int[] TrackColor = {
-            Color.CYAN-0x20000000, Color.BLUE-0x20000000, Color.MAGENTA-0x20000000, Color.RED-0x20000000, Color.YELLOW-0x20000000
-    };
 
     private void updateUIWithKml(){
         if (mKmlOverlay != null){
