@@ -58,10 +58,12 @@ public class MapFragment extends Fragment implements LocationListener {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.map_track, null);
         mMapView = v.findViewById(R.id.map);
 
+        //Set user agent for osmdroid
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
         return v;
