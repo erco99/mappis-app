@@ -9,7 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 public class CreateMapFragment extends Fragment {
+
+    TextInputEditText mapName;
+    TextInputEditText mapDescription;
 
     @Nullable
     @Override
