@@ -4,11 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background_color">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.utils.widget.ImageFilterButton
         android:id="@+id/SettingsImageFilterButton"
+        android:foreground="?android:attr/actionBarItemBackground"
         android:layout_width="61dp"
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
@@ -34,7 +34,7 @@
         android:id="@+id/mapsTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="205dp"
+        android:layout_marginTop="190dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
