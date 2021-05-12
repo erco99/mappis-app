@@ -1,6 +1,4 @@
-    package com.example.mappis;
-
-import android.location.Location;
+package com.example.mappis;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -18,7 +16,7 @@ public class Utilities {
 
         transaction.replace(R.id.fragment_container_view, fragment, tag);
 
-        if (!(fragment instanceof HomeFragment)) {
+        if (!(fragment instanceof HomeFragment) && !(fragment instanceof MapFragment)) {
             transaction.addToBackStack(tag);
         }
 
