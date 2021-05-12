@@ -10,17 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mappis.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
-    private List<CardItem> cardItemList;
+    private List<CardItem> cardItemList = new ArrayList<>();
 
     private Activity activity;
 
-    public CardAdapter(Activity activity, List<CardItem> cardItemList) {
+    private OnItemListener listener;
+
+    public CardAdapter(Activity activity, OnItemListener listener) {
         this.activity = activity;
-        this.cardItemList = cardItemList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -42,5 +45,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
     @Override
     public int getItemCount() {
         return cardItemList.size();
+    }
+
+    public void setData(List<CardItem> list) {
+        this.cardItemList = new ArrayList<>(list);
+        notifyDataSetChanged();
     }
 }
