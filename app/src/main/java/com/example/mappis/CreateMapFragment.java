@@ -1,12 +1,14 @@
 package com.example.mappis;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +29,7 @@ public class CreateMapFragment extends Fragment {
     Button createButton;
     AddCardViewModel addCardViewModel;
     ImageFilterButton goBack;
+    Spinner spinner;
 
     @Nullable
     @Override
@@ -42,6 +45,7 @@ public class CreateMapFragment extends Fragment {
 
         mapName = view.findViewById(R.id.mapNameTextInputEditText);
         mapDescription = view.findViewById(R.id.mapDescTextInputEditText);
+        spinner = (Spinner) activity.findViewById(R.id.spinner);
 
         addCardViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(AddCardViewModel.class);
 
@@ -49,14 +53,14 @@ public class CreateMapFragment extends Fragment {
         createButton.setOnClickListener(v -> {
             addCardViewModel.addCardItem(new CardItem(mapName.getText().toString(),
                     mapDescription.getText().toString()));
-            ((AppCompatActivity) activity).getSupportFragmentManager().popBackStack();
+            Intent intent = new Intent(activity, MapActivity.class);
+            intent.putExtra("map_type", spinner.getSelectedItem().toString());
+            activity.startActivity(intent);
         });
 
         goBack = view.findViewById(R.id.goBackButton);
         goBack.setOnClickListener(v -> {
             ((AppCompatActivity) activity).getSupportFragmentManager().popBackStack();
-            System.out.println("ciao");
         });
-
     }
 }
