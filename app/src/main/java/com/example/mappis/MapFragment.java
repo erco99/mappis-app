@@ -51,8 +51,8 @@ public class MapFragment extends Fragment implements LocationListener {
     protected ImageButton pencilButton;
     protected ImageButton iconButton;
     protected ImageButton textButton;
-
-    protected  ImageButton trackButton;
+    protected ImageButton saveButton;
+    protected ImageButton trackButton;
 
     private MapView mMapView;
 
@@ -88,7 +88,7 @@ public class MapFragment extends Fragment implements LocationListener {
         mRotationGestureOverlay = new RotationGestureOverlay(mMapView);
         mRotationGestureOverlay.setEnabled(true);
 
-        mMapView.getController().setZoom(15.0);
+        mMapView.getController().setZoom(20.0);
         mMapView.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
         mMapView.setTilesScaledToDpi(true);
         mMapView.setMultiTouchControls(true);
@@ -96,7 +96,30 @@ public class MapFragment extends Fragment implements LocationListener {
         mMapView.getOverlays().add(this.mLocationOverlay);
         mMapView.getOverlays().add(this.mCompassOverlay);
         mMapView.getOverlays().add(this.mScaleBarOverlay);
-        mMapView.setTileSource(TileSourceFactory.OPEN_SEAMAP);
+
+        //map type loading
+        if(getActivity().getIntent().getExtras() != null) {
+            String value = getActivity().getIntent().getExtras().getString("map_type");
+            switch (value) {
+                case "Default map":
+                    mMapView.setTileSource(TileSourceFactory.MAPNIK);
+                    break;
+                case "Empty map":
+                    mMapView.setTileSource(TileSourceFactory.OPEN_SEAMAP);
+                    break;
+                case "Hike map":
+                    mMapView.setTileSource(TileSourceFactory.HIKEBIKEMAP);
+                    break;
+                case "Open topo map":
+                    mMapView.setTileSource(TileSourceFactory.OpenTopo);
+                    break;
+                case "Wikimedia map":
+                    mMapView.setTileSource(TileSourceFactory.WIKIMEDIA);
+                    break;
+            }
+        } else {
+            mMapView.setTileSource(TileSourceFactory.MAPNIK);
+        }
 
         mLocationOverlay.enableMyLocation();
         mLocationOverlay.enableFollowLocation();
@@ -142,6 +165,11 @@ public class MapFragment extends Fragment implements LocationListener {
                         this.currentLocation, this.mMapView);
                 dialog.show(getParentFragmentManager(), "dialog");
             }
+        });
+
+        saveButton = view.findViewById(R.id.save_button);
+        saveButton.setOnClickListener(v -> {
+
         });
 
         //tracking button
