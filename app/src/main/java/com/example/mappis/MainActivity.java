@@ -1,10 +1,15 @@
 package com.example.mappis;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 
+import com.example.mappis.CardMaps.AddCardViewModel;
+
 public class MainActivity extends AppCompatActivity {
+
+    AddCardViewModel addCardViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,5 +18,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null)
             Utilities.insertFragment(this, new HomeFragment(), "HomeFragment");
+
+
+        addCardViewModel = new ViewModelProvider(this).get(AddCardViewModel.class);
     }
 }
