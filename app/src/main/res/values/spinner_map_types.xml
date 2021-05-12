@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinner_map_types">
+        <item>Default map</item>
+        <item>Empty map</item>
+        <item>Hike map</item>
+        <item>Open Topo map</item>
+        <item>Wikimedia map</item>
+    </string-array>
+</resources>
