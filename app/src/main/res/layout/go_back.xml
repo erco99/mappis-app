@@ -7,6 +7,8 @@
 
     <androidx.constraintlayout.utils.widget.ImageFilterButton
         android:id="@+id/goBackButton"
+        android:foreground="?android:attr/actionBarItemBackground"
+        android:backgroundTint="#0000"
         android:layout_width="51dp"
         android:layout_height="49dp"
         android:layout_marginStart="16dp"
