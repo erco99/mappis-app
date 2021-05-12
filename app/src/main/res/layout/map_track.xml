@@ -31,17 +31,26 @@
 
 
             <ImageButton
-                android:id="@+id/pencil_button"
+                android:id="@+id/save_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/diskette"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/pencil_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageButton
+                android:id="@+id/pencil_button"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:background="@drawable/highlighter"
                 android:foreground="?android:attr/selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/icon_button"
-                app:layout_constraintHorizontal_bias="0.36"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/save_button"/>
 
             <ImageButton
                 android:id="@+id/icon_button"
