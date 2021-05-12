@@ -9,4 +9,5 @@
     <string name="create_new_map">Create new map</string>
     <string name="your_maps">Your maps</string>
     <string name="my_location_button">My location button</string>
+    <string name="choose_map_style">Choose map style</string>
 </resources>
