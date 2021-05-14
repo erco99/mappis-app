@@ -1,6 +1,13 @@
 package com.example.mappis;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -11,23 +18,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import com.j256.ormlite.stmt.query.In;
+
+import org.osmdroid.bonuspack.kml.KmlDocument;
+import org.osmdroid.bonuspack.kml.KmlFeature;
+import org.osmdroid.bonuspack.kml.Style;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.FolderOverlay;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class MapFragment extends Fragment implements LocationListener {
 
@@ -55,6 +78,29 @@ public class MapFragment extends Fragment implements LocationListener {
     protected ImageButton trackButton;
 
     private MapView mMapView;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Data will be lost").setPositiveButton(
+                        "OK", (dialog, which) -> {
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            getActivity().startActivity(intent);
+                            getActivity().finish();
+                        }
+                ).setNegativeButton("CANCEL", (dialog, which) -> dialog.dismiss());
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
 
     @Nullable
     @Override
@@ -186,6 +232,47 @@ public class MapFragment extends Fragment implements LocationListener {
             }
         });
 
+
+        saveButton = view.findViewById(R.id.save_button);
+        saveButton.setOnClickListener(v -> {
+            System.out.println("click");
+            File localFile = new File(getActivity().getExternalFilesDir(null) + "/prova.kml");
+            try {
+                localFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println(localFile);
+            if(localFile.exists()) {
+                Utilities.kmlDocument.saveAsKML(localFile);
+                System.out.println("save");
+            }
+        });
+
+
+
+        //load the map
+        Drawable defaultMarker = getActivity().getDrawable(R.drawable.forest);
+        Bitmap defaultBitmap = ((BitmapDrawable)defaultMarker).getBitmap();
+        Style defaultStyle = new Style(defaultBitmap, 0x901010AA, 3.0f, 0x20AA1010);
+
+        MyKmlStyler styler = new MyKmlStyler();
+
+        KmlDocument kmlDocument = new KmlDocument();
+
+        File f = new File("/storage/emulated/0/Android/data/com.example.mappis/files/prova.kml");
+
+        if(f.exists()) {
+            kmlDocument.parseKMLFile(f);
+            FolderOverlay kmlOverlay = (FolderOverlay) kmlDocument.mKmlRoot.buildOverlay(mMapView, null, styler, kmlDocument);
+            mMapView.getOverlays().add(kmlOverlay);
+            mMapView.invalidate();
+        }
+
+
+
+
+
     }
 
     @Override
@@ -235,6 +322,7 @@ public class MapFragment extends Fragment implements LocationListener {
         }
 
     }
+
 
     @Override
     public void onDestroyView() {
