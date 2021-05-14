@@ -22,6 +22,8 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
+import java.io.IOException;
+
 
 public class    IconShowFragment extends DialogFragment {
 
@@ -51,7 +53,11 @@ public class    IconShowFragment extends DialogFragment {
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             IconAdder iconAdder = new IconAdder(currentLocation, map, getActivity());
             if(currentLocation != null && images != Utilities.pencil_type_icons) {
-                iconAdder.insertIcon(images[position]);
+                try {
+                    iconAdder.insertIcon(images[position]);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else if(currentLocation != null){
                 TrackRecorder.COLOR = Color.BLUE;
             }
