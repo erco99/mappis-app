@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.utils.widget.ImageFilterButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -33,6 +34,7 @@ public class HomeFragment extends Fragment implements OnItemListener {
     private CardAdapter adapter;
     private Activity activity;
     private CardViewModel cardViewModel;
+    private ImageFilterButton settingsButton;
 
     @Nullable
     @Override
@@ -58,11 +60,17 @@ public class HomeFragment extends Fragment implements OnItemListener {
             });
 
             floatingActionButton = view.findViewById(R.id.fab_add);
-
             floatingActionButton.setOnClickListener(v -> {
                 Utilities.insertFragment((AppCompatActivity) getActivity(), new CreateMapFragment(),
                         "Create map fragment");
             });
+
+            settingsButton = view.findViewById(R.id.SettingsImageFilterButton);
+            settingsButton.setOnClickListener(v -> {
+                Utilities.insertFragment((AppCompatActivity) getActivity(), new SettingsFragment(),
+                        SettingsFragment.class.getSimpleName());
+            });
+
         }
     }
 
@@ -84,10 +92,8 @@ public class HomeFragment extends Fragment implements OnItemListener {
 
             cardViewModel.select(cardViewModel.getCardItem(position));
 
-            /*
-            Utilities.insertFragment(appCompatActivity, new DetailsFragment(),
-                    DetailsFragment.class.getSimpleName());
-                    */
+            Utilities.insertFragment(appCompatActivity, new MapDetailsFragment(),
+                    MapDetailsFragment.class.getSimpleName());
         }
     }
 }
