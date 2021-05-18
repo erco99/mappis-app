@@ -69,20 +69,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/details_map" />
 
-            <TextView
-                android:id="@+id/comment"
-                android:layout_width="wrap_content"
+            <ListView
+                android:id="@+id/commentListView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:fontFamily="@font/mandali"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, "
-                android:textColor="#000000"
-                android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/map_comments" />
+                app:layout_constraintTop_toBottomOf="@id/map_comments"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout"
@@ -92,11 +85,12 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="150dp"
-                app:layout_constraintEnd_toStartOf="@+id/button"
+                app:layout_constraintEnd_toStartOf="@+id/add_comment_button"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/comment">
+                app:layout_constraintTop_toBottomOf="@+id/commentListView">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/commentTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -105,7 +99,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/add_comment_button"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_marginEnd="30dp"
