@@ -25,7 +25,7 @@ import org.osmdroid.views.overlay.Marker;
 import java.io.IOException;
 
 
-public class    IconShowFragment extends DialogFragment {
+public class IconShowFragment extends DialogFragment {
 
     GridView gridView;
     Location currentLocation;

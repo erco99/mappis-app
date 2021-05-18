@@ -7,11 +7,12 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.mappis.CardMaps.CardItem;
+import com.example.mappis.CardMaps.Comments.Comment;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {CardItem.class}, version = 1)
+@Database(entities = {CardItem.class, Comment.class}, version = 1)
 public abstract class MapDatabase extends RoomDatabase {
 
     public abstract CardItemDAO cardItemDAO();

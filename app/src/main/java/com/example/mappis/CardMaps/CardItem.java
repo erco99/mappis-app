@@ -10,7 +10,7 @@ public class CardItem {
     @PrimaryKey(autoGenerate = true)
 
     @ColumnInfo(name = "item_id")
-    private int id;
+    private int itemId;
 
     @ColumnInfo(name = "item_map_name")
     private String mapName;
@@ -31,11 +31,11 @@ public class CardItem {
         return mapDescription;
     }
 
-    public int getId() {
-        return id;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 }

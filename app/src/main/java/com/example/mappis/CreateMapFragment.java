@@ -56,10 +56,10 @@ public class CreateMapFragment extends Fragment {
         spinner = activity.findViewById(R.id.spinner);
 
 
-
         addCardViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(AddCardViewModel.class);
 
         mapImage = view.findViewById(R.id.mapImageView);
+
 
         createButton = view.findViewById(R.id.createMapButton);
         createButton.setOnClickListener(v -> {
@@ -71,6 +71,7 @@ public class CreateMapFragment extends Fragment {
                 addCardViewModel.addCardItem(new CardItem(
                         mapName.getText().toString(),
                         mapDescription.getText().toString()));
+
                 Intent intent = new Intent(activity, MapActivity.class);
                 intent.putExtra("map_type", spinner.getSelectedItem().toString());
 

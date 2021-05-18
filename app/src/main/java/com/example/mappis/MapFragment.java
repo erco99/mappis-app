@@ -256,7 +256,7 @@ public class MapFragment extends Fragment implements LocationListener {
         Bitmap defaultBitmap = ((BitmapDrawable)defaultMarker).getBitmap();
         Style defaultStyle = new Style(defaultBitmap, 0x901010AA, 3.0f, 0x20AA1010);
 
-        MyKmlStyler styler = new MyKmlStyler();
+        MyKmlStyler styler = new MyKmlStyler(Utilities.kmlDocument, mMapView, getActivity());
 
         KmlDocument kmlDocument = new KmlDocument();
 
@@ -268,8 +268,6 @@ public class MapFragment extends Fragment implements LocationListener {
             mMapView.getOverlays().add(kmlOverlay);
             mMapView.invalidate();
         }
-
-
 
 
 

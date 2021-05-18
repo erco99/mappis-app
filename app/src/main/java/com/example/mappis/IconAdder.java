@@ -52,7 +52,7 @@ public class IconAdder {
     }
 
     public void applyDraggableListener(Marker poiMarker) {
-        poiMarker.setDraggable(true);
+        poiMarker.setDraggable( true);
         poiMarker.setOnMarkerDragListener(new Marker.OnMarkerDragListener() {
             @Override
             public void onMarkerDragStart(Marker marker) {}
@@ -68,8 +68,9 @@ public class IconAdder {
 
                 Utilities.kmlDocument.putStyle("prova-style", style);
 
-
                 Utilities.kmlDocument.mKmlRoot.addOverlay(marker, Utilities.kmlDocument);
+                Utilities.kmlDocument.mKmlRoot.setExtendedData("category", "prova-style");
+                System.out.println(Utilities.kmlDocument.mKmlRoot.getExtendedData("category"));
             }
 
             @Override
