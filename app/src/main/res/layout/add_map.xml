@@ -75,7 +75,8 @@
                     android:id="@+id/mapNameTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:imeOptions="flagNoExtractUi"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -108,7 +109,8 @@
                     android:id="@+id/mapDescTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:imeOptions="flagNoExtractUi"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
