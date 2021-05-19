@@ -9,23 +9,21 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 
-import com.example.mappis.CardMaps.CardItem;
 import com.example.mappis.R;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class CommentAdapter extends ArrayAdapter<Comment> {
 
-    private Context context;
-    private int resource;
-    List<Comment> comments;
+    Context context;
+    int resource;
+    TextView commentTextView;
+    TextView dateCommentTextView;
 
-    public CommentAdapter(@NonNull Context context, int resource, List<Comment> comments) {
-        super(context, resource);
-        this.comments = comments;
+    public CommentAdapter(@NonNull Context context, int resource, ArrayList<Comment> objects) {
+        super(context, resource, objects);
         this.context = context;
         this.resource = resource;
     }
@@ -34,21 +32,15 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        String comment = getItem(position).getComment();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        convertView = inflater.inflate(resource, parent, false);
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(resource, null);
+        commentTextView = convertView.findViewById(R.id.commentTextView);
+        dateCommentTextView = convertView.findViewById(R.id.commentDateTextView);
 
-        TextView commentTextView = convertView.findViewById(R.id.commentTextView);
-
-
-        commentTextView.setText(comment);
+        commentTextView.setText(getItem(position).getComment());
+        dateCommentTextView.setText(getItem(position).getTimestamp());
 
         return convertView;
-    }
-
-    public void setData(List<Comment> list) {
-        this.comments = new ArrayList<>(list);
-        notifyDataSetChanged();
     }
 }

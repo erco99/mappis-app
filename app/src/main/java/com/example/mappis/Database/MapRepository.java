@@ -13,8 +13,6 @@ public class MapRepository {
 
     private CardItemDAO cardItemDAO;
     private LiveData<List<CardItem>> cardItemList;
-
-
     private LiveData<List<Comment>> commentList;
     private MapDatabase database;
 
@@ -27,19 +25,14 @@ public class MapRepository {
         cardItemList = cardItemDAO.getCardItems();
     }
 
-    public void setId(int id) {
-        this.id = id;
-        setCommentList();
-    }
-    private void setCommentList() {
-        this.commentList = cardItemDAO.getComments(id);
-    }
 
     public LiveData<List<CardItem>> getCardItemList() {
         return cardItemList;
     }
 
-    public LiveData<List<Comment>> getCommentList() {
+    public LiveData<List<Comment>> getCommentList(int id) {
+
+        commentList = cardItemDAO.getComments(id);
         return commentList;
     }
 

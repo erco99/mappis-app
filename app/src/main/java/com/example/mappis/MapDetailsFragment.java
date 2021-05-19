@@ -24,11 +24,12 @@ import com.example.mappis.CardMaps.CardItem;
 import com.example.mappis.CardMaps.CardViewModel;
 import com.example.mappis.CardMaps.Comments.Comment;
 import com.example.mappis.CardMaps.Comments.CommentAdapter;
-import com.example.mappis.CardMaps.OnItemListener;
-import com.example.mappis.Database.CardItemDAO;
-import com.example.mappis.Database.MapDatabase;
 import com.google.android.material.textfield.TextInputEditText;
 
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapDetailsFragment extends Fragment {
@@ -37,7 +38,9 @@ public class MapDetailsFragment extends Fragment {
     Button addButton;
     TextInputEditText commentBox;
     ListView listView;
-    CommentAdapter adapter;
+    int id;
+    private static final SimpleDateFormat timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    Timestamp time = new Timestamp(System.currentTimeMillis());
 
     @Nullable
     @Override
@@ -55,32 +58,36 @@ public class MapDetailsFragment extends Fragment {
         addButton = view.findViewById(R.id.add_comment_button);
         listView = view.findViewById(R.id.commentListView);
 
-
         AddCardViewModel addCardViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(AddCardViewModel.class);
 
         CardViewModel cardViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(CardViewModel.class);
+
+
 
         cardViewModel.getSelected().observe(getViewLifecycleOwner(), new Observer<CardItem>() {
             @Override
             public void onChanged(CardItem cardItem) {
 
-                cardViewModel.setId(cardItem.getItemId());
+                cardViewModel.getComments(cardItem.getItemId()).observe((LifecycleOwner) activity, new Observer<List<Comment>>() {
+                    @Override
+                    public void onChanged(List<Comment> comments) {
 
-                System.out.println(cardViewModel.getComments().getValue());
-
-                System.out.println(cardViewModel.getCardItems().getValue());
+                        ArrayList<Comment> list = new ArrayList<>(comments);
+                        CommentAdapter adapter = new CommentAdapter(activity, R.layout.single_comment_row, list);
+                        listView.setAdapter(adapter);
+                    }
+                });
 
                 addButton.setOnClickListener(v -> {
                     addCardViewModel.addComment(new Comment(commentBox.getText().toString(),
-                            cardItem.getItemId()));
+                            cardItem.getItemId(),
+                            timestamp.format(time)));
                     commentBox.getText().clear();
-
                     Toast.makeText(activity, "Comment added", Toast.LENGTH_SHORT).show();
-
+                    id = cardItem.getItemId();
                 });
             }
         });
-
 
         goBack = view.findViewById(R.id.goBackButton);
         goBack.setOnClickListener(v -> {

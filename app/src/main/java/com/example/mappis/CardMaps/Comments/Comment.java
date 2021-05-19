@@ -9,22 +9,28 @@ import androidx.room.PrimaryKey;
 public class Comment {
 
     @PrimaryKey(autoGenerate = true)
+
     @ColumnInfo(name = "comment_id")
     private int commentId;
 
     @ColumnInfo(name = "card_item_id")
     private int cardItemId;
 
-
     @ColumnInfo(name = "comment")
     private String comment;
 
-    public Comment(String comment, int cardItemId) {
+    @ColumnInfo(name = "timestamp")
+    private String timestamp;
+
+    public Comment(String comment, int cardItemId, String timestamp) {
         this.comment = comment;
         this.cardItemId = cardItemId;
-
+        this.timestamp = timestamp;
     }
 
+    public String getTimestamp() {
+        return timestamp;
+    }
     public String getComment() {
         return comment;
     }

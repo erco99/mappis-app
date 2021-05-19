@@ -52,6 +52,8 @@ public class HomeFragment extends Fragment implements OnItemListener {
             setRecyclerView(activity);
 
             cardViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(CardViewModel.class);
+
+            System.out.println("home" + cardViewModel.getCardItems().getValue());
             cardViewModel.getCardItems().observe((LifecycleOwner) activity, new Observer<List<CardItem>>() {
                 @Override
                 public void onChanged(List<CardItem> cardItemList) {

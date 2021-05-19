@@ -28,15 +28,6 @@ public class CardViewModel extends AndroidViewModel {
 
     }
 
-    public void setId(int id) {
-        repository.setId(id);
-        setComments();
-    }
-
-    private void setComments() {
-        this.comments = repository.getCommentList();
-    }
-
     public void select(CardItem cardItem) {
         itemSelected.setValue(cardItem);
     }
@@ -45,7 +36,8 @@ public class CardViewModel extends AndroidViewModel {
         return itemSelected;
     }
 
-    public LiveData<List<Comment>> getComments() {
+    public LiveData<List<Comment>> getComments(int id) {
+        comments = repository.getCommentList(id);
         return comments;
     }
 

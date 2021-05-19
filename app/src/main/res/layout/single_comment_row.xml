@@ -6,14 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
-        android:id="@+id/commentTimeTextView"
+        android:id="@+id/commentDateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/commentTextView"
-        app:layout_constraintHorizontal_bias="0.155"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/mandali"
+        android:gravity="center"
+        android:text="Data"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,10 +26,17 @@
         android:id="@+id/commentTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="156dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/mandali"
+        android:gravity="center"
         android:text="TextView"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/commentDateTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
