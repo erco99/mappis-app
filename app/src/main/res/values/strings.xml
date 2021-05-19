@@ -14,4 +14,15 @@
     <string name="comments">Comments:</string>
     <string name="add_comment">Add comment</string>
     <string name="add">Add</string>
+    <string name="app_logo">app_logo</string>
+    <string name="button_for_location_set">Button for location set</string>
+    <string name="clickable_image_for_map_loading">Clickable image for map loading</string>
+    <string name="button_for_map_saving">Button for map saving</string>
+    <string name="button_for_tracking_color_choose">Button for tracking color choose</string>
+    <string name="button_for_marker_add_choose">Button for marker add choose</string>
+    <string name="button_for_marker_with_text_add_choose">Button for marker with text add choose</string>
+    <string name="button_to_play_or_pause_the_tracking">Button to play or pause the tracking</string>
+    <string name="image_of_the_map_in_the_card">Image of the map in the card</string>
+    <string name="data">Data</string>
+    <string name="comment">Comment</string>
 </resources>

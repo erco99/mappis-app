@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -19,12 +18,12 @@
 
         <TextView
             android:id="@+id/createTitleTextView"
-            android:layout_width="130dp"
-            android:layout_height="55dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/mandali"
             android:text="@string/create_map"
             android:textColor="#000000"
-            android:textSize="24sp"
+            android:textSize="30sp"
             app:layout_anchor="@+id/constraintLayout"
             app:layout_anchorGravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -54,6 +53,7 @@
                 android:text="@string/insert_map_name"
                 android:textColor="#000000"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -83,11 +83,12 @@
                 android:id="@+id/insertShortDescTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/mandali"
                 android:text="@string/insert_short_description"
                 android:textColor="#000000"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mapNameTextInputLayout" />
@@ -115,23 +116,25 @@
                 android:id="@+id/mapStyleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/mandali"
                 android:text="@string/choose_map_style"
                 android:textColor="#000000"
                 android:textSize="20sp"
-                android:layout_marginTop="30dp"
-                app:layout_constraintTop_toBottomOf="@id/mapDescTextInputLayout"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                />
+                app:layout_constraintTop_toBottomOf="@id/mapDescTextInputLayout" />
 
             <Spinner
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginTop="15dp"
                 android:entries="@array/spinner_map_types"
+                android:gravity="center"
                 android:textAlignment="center"
+                style="@style/Widget.AppCompat.Light.DropDownItem.Spinner"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mapStyleTextView" />
@@ -140,9 +143,9 @@
                 android:id="@+id/createMapButton"
                 android:layout_width="match_parent"
                 android:layout_height="85dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="10dp"
                 android:backgroundTint="#252923"
                 android:text="@string/create_new_map"
                 android:textSize="18sp"
@@ -151,9 +154,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </ScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

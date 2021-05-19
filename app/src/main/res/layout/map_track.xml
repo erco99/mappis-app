@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false">
@@ -16,7 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
@@ -29,7 +27,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
-
             <ImageButton
                 android:id="@+id/save_button"
                 android:layout_width="40dp"
@@ -39,7 +36,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/pencil_button"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/button_for_map_saving" />
 
             <ImageButton
                 android:id="@+id/pencil_button"
@@ -50,7 +48,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/icon_button"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/save_button"/>
+                app:layout_constraintStart_toEndOf="@+id/save_button"
+                android:contentDescription="@string/button_for_tracking_color_choose" />
 
             <ImageButton
                 android:id="@+id/icon_button"
@@ -61,7 +60,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/text_button"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/pencil_button"/>
+                app:layout_constraintStart_toEndOf="@id/pencil_button"
+                android:contentDescription="@string/button_for_marker_add_choose" />
 
             <ImageButton
                 android:id="@+id/text_button"
@@ -72,7 +72,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/icon_button"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/button_for_marker_with_text_add_choose" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -102,9 +103,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="30dp"
             android:background="#00ffffff"
-            android:src="@drawable/ic_baseline_play_arrow_24" />
+            android:src="@drawable/ic_baseline_play_arrow_24"
+            android:contentDescription="@string/button_to_play_or_pause_the_tracking" />
 
     </RelativeLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
