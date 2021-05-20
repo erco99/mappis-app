@@ -11,20 +11,14 @@ import java.util.List;
 
 public class MapRepository {
 
-    private CardItemDAO cardItemDAO;
-    private LiveData<List<CardItem>> cardItemList;
-    private LiveData<List<Comment>> commentList;
-    private MapDatabase database;
-
-    private int id;
-
+    private final CardItemDAO cardItemDAO;
+    private final LiveData<List<CardItem>> cardItemList;
 
     public MapRepository(Application application) {
-        database = MapDatabase.getDatabase(application);
+        MapDatabase database = MapDatabase.getDatabase(application);
         cardItemDAO = database.cardItemDAO();
         cardItemList = cardItemDAO.getCardItems();
     }
-
 
     public LiveData<List<CardItem>> getCardItemList() {
         return cardItemList;
@@ -32,25 +26,14 @@ public class MapRepository {
 
     public LiveData<List<Comment>> getCommentList(int id) {
 
-        commentList = cardItemDAO.getComments(id);
-        return commentList;
+        return cardItemDAO.getComments(id);
     }
 
     public void addCardItem(final CardItem cardItem) {
-        MapDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                cardItemDAO.addCardItem(cardItem);
-            }
-        });
+        MapDatabase.databaseWriteExecutor.execute(() -> cardItemDAO.addCardItem(cardItem));
     }
 
     public void addComment(final Comment comment) {
-        MapDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                cardItemDAO.addComment(comment);
-            }
-        });
+        MapDatabase.databaseWriteExecutor.execute(() -> cardItemDAO.addComment(comment));
     }
 }

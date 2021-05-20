@@ -14,12 +14,9 @@ import java.util.List;
 
 public class CardViewModel extends AndroidViewModel {
 
-    private LiveData<List<CardItem>> cardItems;
-    private LiveData<List<Comment>> comments;
+    private final LiveData<List<CardItem>> cardItems;
     private final MutableLiveData<CardItem> itemSelected = new MutableLiveData<>();
-    private MapRepository repository;
-
-    private int id;
+    private final MapRepository repository;
 
     public CardViewModel(@NonNull Application application) {
         super(application);
@@ -37,8 +34,7 @@ public class CardViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Comment>> getComments(int id) {
-        comments = repository.getCommentList(id);
-        return comments;
+        return repository.getCommentList(id);
     }
 
     public LiveData<List<CardItem>> getCardItems() {

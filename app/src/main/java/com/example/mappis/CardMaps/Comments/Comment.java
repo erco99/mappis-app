@@ -1,6 +1,5 @@
 package com.example.mappis.CardMaps.Comments;
 
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -14,13 +13,13 @@ public class Comment {
     private int commentId;
 
     @ColumnInfo(name = "card_item_id")
-    private int cardItemId;
+    private final int cardItemId;
 
     @ColumnInfo(name = "comment")
-    private String comment;
+    private final String comment;
 
     @ColumnInfo(name = "timestamp")
-    private String timestamp;
+    private final String timestamp;
 
     public Comment(String comment, int cardItemId, String timestamp) {
         this.comment = comment;
@@ -31,6 +30,7 @@ public class Comment {
     public String getTimestamp() {
         return timestamp;
     }
+
     public String getComment() {
         return comment;
     }

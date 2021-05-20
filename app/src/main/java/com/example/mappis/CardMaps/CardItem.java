@@ -13,10 +13,10 @@ public class CardItem {
     private int itemId;
 
     @ColumnInfo(name = "item_map_name")
-    private String mapName;
+    private final String mapName;
 
     @ColumnInfo(name = "item_map_description")
-    private String mapDescription;
+    private final String mapDescription;
 
     public CardItem(String mapName, String mapDescription) {
         this.mapName = mapName;

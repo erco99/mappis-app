@@ -71,8 +71,7 @@ public class TrackRecorder {
         Style s = new Style();
 
         s.mLineStyle = new LineStyle(COLOR, 26.0f);
-        String styleId = mKmlDocument.addStyle(s);
-        p.mStyle = styleId;
+        p.mStyle = mKmlDocument.addStyle(s);
         return t;
     }
 

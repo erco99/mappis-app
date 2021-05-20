@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+import androidx.appcompat.content.res.AppCompatResources;
+
 import org.osmdroid.bonuspack.kml.KmlDocument;
 import org.osmdroid.bonuspack.kml.KmlFeature;
 import org.osmdroid.bonuspack.kml.KmlLineString;
@@ -44,19 +46,19 @@ public class MyKmlStyler implements KmlFeature.Styler {
     @Override
     public void onPoint(Marker marker, KmlPlacemark kmlPlacemark, KmlPoint kmlPoint) {
 
-        Drawable defaultMarker = activity.getDrawable(R.drawable.forest);
-        Bitmap defaultBitmap = ((BitmapDrawable)defaultMarker).getBitmap();
-        Style prova = new Style(defaultBitmap, 0x901010AA, 3.0f, 0x20AA1010);
+        if(activity != null) {
+            Drawable defaultMarker = AppCompatResources.getDrawable(activity, R.drawable.forest);
+            Bitmap defaultBitmap = ((BitmapDrawable) defaultMarker).getBitmap();
+            Style prova = new Style(defaultBitmap, 0x901010AA, 3.0f, 0x20AA1010);
 
-        System.out.println(kmlPlacemark.getExtendedData("category"));
+            System.out.println(kmlPlacemark.getExtendedData("category"));
 
-        if ("panda_area".equals(kmlPlacemark.getExtendedData("category"))) {
-            kmlPlacemark.mStyle = "prova-style";
-            System.out.println(kmlPlacemark.mStyle);
+            if ("panda_area".equals(kmlPlacemark.getExtendedData("category"))) {
+                kmlPlacemark.mStyle = "prova-style";
+                System.out.println(kmlPlacemark.mStyle);
+            }
+            kmlPoint.applyDefaultStyling(marker, prova, kmlPlacemark, mKmlDocument, map);
         }
-        kmlPoint.applyDefaultStyling(marker, prova, kmlPlacemark, mKmlDocument, map);
-
-
 
     }
 

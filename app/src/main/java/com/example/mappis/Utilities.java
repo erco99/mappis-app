@@ -8,6 +8,9 @@ import org.osmdroid.bonuspack.kml.KmlDocument;
 
 public class Utilities {
 
+    static final int REQUEST_ACCESS_FINE_LOCATION = 1;
+    static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2;
+
     static final int[] pencil_type_icons = {R.drawable.nature};
     static final int[] drag_icons = {R.drawable.waves, R.drawable.lake};
     static final int[] text_icons = {};

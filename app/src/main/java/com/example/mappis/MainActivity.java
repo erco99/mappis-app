@@ -9,7 +9,7 @@ import com.example.mappis.CardMaps.AddCardViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
-    AddCardViewModel addCardViewModel;
+    private AddCardViewModel addCardViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null)
             Utilities.insertFragment(this, new HomeFragment(), "HomeFragment");
-
 
         addCardViewModel = new ViewModelProvider(this).get(AddCardViewModel.class);
     }

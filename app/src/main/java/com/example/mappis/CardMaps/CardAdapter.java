@@ -19,7 +19,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
     private Activity activity;
 
-    private OnItemListener listener;
+    private final OnItemListener listener;
 
     public CardAdapter(Activity activity, OnItemListener listener) {
         this.activity = activity;

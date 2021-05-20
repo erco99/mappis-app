@@ -13,7 +13,7 @@ public class CardViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     TextView nameTextView;
     TextView descriptionTextView;
 
-    private OnItemListener itemListener;
+    private final OnItemListener itemListener;
 
     public CardViewHolder(@NonNull View itemView, OnItemListener listener) {
         super(itemView);

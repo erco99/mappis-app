@@ -28,8 +28,6 @@ public class SettingsFragment extends Fragment {
         final Activity activity = getActivity();
 
         goBack = view.findViewById(R.id.goBackButton);
-        goBack.setOnClickListener(v -> {
-            ((AppCompatActivity) activity).getSupportFragmentManager().popBackStack();
-        });
+        goBack.setOnClickListener(v -> ((AppCompatActivity) activity).getSupportFragmentManager().popBackStack());
     }
 }

@@ -1,34 +1,23 @@
 package com.example.mappis;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.os.Environment;
 
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import org.osmdroid.bonuspack.kml.Style;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.FileHandler;
-
-import static com.example.mappis.TrackRecorder.mKmlDocument;
-
 public class IconAdder {
 
-    Location currentLocation = null;
-    MapView map;
-    GeoPoint point;
-    Marker marker;
-    Activity activity;
+    private final Location currentLocation;
+    private final MapView map;
+    private final Activity activity;
 
     public IconAdder(Location currentLocation, MapView map, Activity activity) {
         this.currentLocation = currentLocation;
@@ -36,19 +25,19 @@ public class IconAdder {
         this.activity = activity;
     }
 
-    public void insertIcon(int image) throws IOException {
-        marker = new Marker(map);
-        point = new GeoPoint(currentLocation);
+    public void insertIcon(int image) {
+        Marker marker = new Marker(map);
+        GeoPoint point = new GeoPoint(currentLocation);
 
         marker.setPosition(point);
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(marker);
 
+        map.getOverlays().add(marker);
         map.invalidate();
 
         applyDraggableListener(marker);
 
-        marker.setIcon(activity.getDrawable(image));
+        marker.setIcon(AppCompatResources.getDrawable(activity, image));
     }
 
     public void applyDraggableListener(Marker poiMarker) {
@@ -57,12 +46,12 @@ public class IconAdder {
             @Override
             public void onMarkerDragStart(Marker marker) {}
 
-            @Override
-            public void onMarkerDragEnd(Marker marker) {
+                @Override
+                public void onMarkerDragEnd(Marker marker) {
                 GeoPoint geopoint = marker.getPosition();
                 //poiMarker.setDraggable(false);
 
-                Drawable defaultMarker = activity.getDrawable(R.drawable.woodland);
+                Drawable defaultMarker = AppCompatResources.getDrawable(activity, R.drawable.woodland);
                 Bitmap bitmap = ((BitmapDrawable)defaultMarker).getBitmap();
                 Style style = new Style(bitmap, 0x901010AA, 3.0f, 0x20AA1010);
 
