@@ -8,11 +8,14 @@ import org.osmdroid.bonuspack.kml.KmlDocument;
 
 public class Utilities {
 
+    static final String MAP_NAME_STRING = "/mappis_map_";
+
     static final int REQUEST_ACCESS_FINE_LOCATION = 1;
     static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
     static final int[] pencil_type_icons = {R.drawable.nature};
-    static final int[] drag_icons = {R.drawable.waves, R.drawable.lake};
+    static final int[] drag_icons = {R.drawable.lake128, R.drawable.lake256, R.drawable.lake,
+    R.drawable.marker_default, R.drawable.wavesgood, R.drawable.letter};
     static final int[] text_icons = {};
 
     static KmlDocument kmlDocument = new KmlDocument();
