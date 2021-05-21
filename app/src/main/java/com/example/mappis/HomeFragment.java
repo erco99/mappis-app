@@ -31,7 +31,6 @@ public class HomeFragment extends Fragment implements OnItemListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.home, container, false);
     }
 
@@ -47,7 +46,6 @@ public class HomeFragment extends Fragment implements OnItemListener {
             cardViewModel = new ViewModelProvider((ViewModelStoreOwner) activity)
                     .get(CardViewModel.class);
 
-            System.out.println("home" + cardViewModel.getCardItems().getValue());
             cardViewModel.getCardItems().observe((LifecycleOwner) activity,
                     cardItemList -> adapter.setData(cardItemList));
 

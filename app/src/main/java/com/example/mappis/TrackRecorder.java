@@ -75,8 +75,6 @@ public class TrackRecorder {
         return t;
     }
 
-
-
     private void updateUIWithKml(){
         if (mKmlOverlay != null){
             mKmlOverlay.closeAllInfoWindows();
