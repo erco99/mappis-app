@@ -28,4 +28,6 @@ public interface CardItemDAO {
     @Query("SELECT * FROM comment WHERE card_item_id = :id ORDER BY comment_id DESC")
     LiveData<List<Comment>> getComments(int id);
 
+    @Query("SELECT MAX(item_id) FROM item")
+    LiveData<Integer> getLastId();
 }

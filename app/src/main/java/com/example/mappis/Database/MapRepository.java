@@ -29,6 +29,10 @@ public class MapRepository {
         return cardItemDAO.getComments(id);
     }
 
+    public LiveData<Integer> getLastId() {
+        return cardItemDAO.getLastId();
+    }
+
     public void addCardItem(final CardItem cardItem) {
         MapDatabase.databaseWriteExecutor.execute(() -> cardItemDAO.addCardItem(cardItem));
     }
@@ -36,4 +40,5 @@ public class MapRepository {
     public void addComment(final Comment comment) {
         MapDatabase.databaseWriteExecutor.execute(() -> cardItemDAO.addComment(comment));
     }
+
 }
