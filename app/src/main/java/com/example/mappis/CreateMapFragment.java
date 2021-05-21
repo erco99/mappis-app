@@ -16,12 +16,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.ImageFilterButton;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.mappis.CardMaps.AddCardViewModel;
 import com.example.mappis.CardMaps.CardItem;
+import com.example.mappis.CardMaps.CardViewModel;
 import com.google.android.material.textfield.TextInputEditText;
+import com.j256.ormlite.stmt.query.In;
 
 public class CreateMapFragment extends Fragment {
 
@@ -29,6 +33,7 @@ public class CreateMapFragment extends Fragment {
     private TextInputEditText mapDescription;
     private AddCardViewModel addCardViewModel;
     private Spinner spinner;
+    private int id;
 
     @Nullable
     @Override
@@ -51,6 +56,18 @@ public class CreateMapFragment extends Fragment {
             addCardViewModel = new ViewModelProvider((ViewModelStoreOwner) activity)
                     .get(AddCardViewModel.class);
 
+
+            CardViewModel cardViewModel = new ViewModelProvider((ViewModelStoreOwner) activity)
+                    .get(CardViewModel.class);
+
+            cardViewModel.getLastId().observe((LifecycleOwner) activity, integer -> {
+                if(integer == null) {
+                    id = 0;
+                } else {
+                    id = integer + 1;
+                }
+            });
+
             Button createButton = view.findViewById(R.id.createMapButton);
             createButton.setOnClickListener(v -> {
                 if (TextUtils.isEmpty(mapName.getText().toString()) ||
@@ -59,13 +76,16 @@ public class CreateMapFragment extends Fragment {
                             Toast.LENGTH_SHORT).show();
                 } else {
                     addCardViewModel.addCardItem(new CardItem(
+                            id,
                             mapName.getText().toString(),
                             mapDescription.getText().toString()));
 
-                    Intent intent = new Intent(activity, MapActivity.class);
-                    intent.putExtra("map_type", spinner.getSelectedItem().toString());
+                    Intent map_intent = new Intent(activity, MapActivity.class);
 
-                    activity.startActivity(intent);
+                    map_intent.putExtra("map_type", spinner.getSelectedItem().toString());
+                    map_intent.putExtra("map_id", id);
+
+                    activity.startActivity(map_intent);
                     activity.finish();
                 }
             });
