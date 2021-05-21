@@ -22,11 +22,14 @@ public class CardViewModel extends AndroidViewModel {
         super(application);
         repository = new MapRepository(application);
         cardItems = repository.getCardItemList();
-
     }
 
     public void select(CardItem cardItem) {
         itemSelected.setValue(cardItem);
+    }
+
+    public LiveData<Integer> getLastId() {
+        return repository.getLastId();
     }
 
     public LiveData<CardItem> getSelected() {

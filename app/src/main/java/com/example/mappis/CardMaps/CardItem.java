@@ -7,10 +7,9 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "item")
 public class CardItem {
 
-    @PrimaryKey(autoGenerate = true)
-
+    @PrimaryKey
     @ColumnInfo(name = "item_id")
-    private int itemId;
+    private final int itemId;
 
     @ColumnInfo(name = "item_map_name")
     private final String mapName;
@@ -18,7 +17,8 @@ public class CardItem {
     @ColumnInfo(name = "item_map_description")
     private final String mapDescription;
 
-    public CardItem(String mapName, String mapDescription) {
+    public CardItem(int itemId, String mapName, String mapDescription) {
+        this.itemId = itemId;
         this.mapName = mapName;
         this.mapDescription = mapDescription;
     }
@@ -33,9 +33,5 @@ public class CardItem {
 
     public int getItemId() {
         return itemId;
-    }
-
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
     }
 }
