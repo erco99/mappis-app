@@ -30,7 +30,9 @@ public class IconAdder {
         GeoPoint point = new GeoPoint(currentLocation);
 
         marker.setPosition(point);
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        marker.setAnchor(Marker.ANCHOR_LEFT, Marker.ANCHOR_TOP);
+
+        marker.setInfoWindow(null);
 
         map.getOverlays().add(marker);
         map.invalidate();
