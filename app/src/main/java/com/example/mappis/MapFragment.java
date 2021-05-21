@@ -3,7 +3,6 @@ package com.example.mappis;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -46,6 +45,9 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UTFDataFormatException;
+
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class MapFragment extends Fragment implements LocationListener {
 
@@ -148,8 +150,8 @@ public class MapFragment extends Fragment implements LocationListener {
             mMapView.getOverlays().add(this.mScaleBarOverlay);
 
             //map type loading
-            if (getActivity().getIntent().getExtras() != null) {
-                String value = getActivity().getIntent().getExtras().getString("map_type");
+            String value = getActivity().getIntent().getExtras().getString("map_type");
+            if (value != null) {
                 switch (value) {
                     case "Default map":
                         mMapView.setTileSource(TileSourceFactory.MAPNIK);
@@ -191,9 +193,17 @@ public class MapFragment extends Fragment implements LocationListener {
             pencilButton.setOnClickListener(v -> {
                 AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
                 if (appCompatActivity != null) {
-                    IconShowFragment dialog = new IconShowFragment(Utilities.pencil_type_icons,
-                            this.currentLocation, this.mMapView);
-                    dialog.show(getParentFragmentManager(), "dialog");
+                    AmbilWarnaDialog dialog = new AmbilWarnaDialog(activity, TrackRecorder.COLOR, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                        @Override
+                        public void onCancel(AmbilWarnaDialog dialog) {
+                            //do nothing
+                        }
+                        @Override
+                        public void onOk(AmbilWarnaDialog dialog, int color) {
+                            TrackRecorder.COLOR = color;
+                        }
+                    });
+                    dialog.show();
                 }
             });
 
@@ -237,10 +247,13 @@ public class MapFragment extends Fragment implements LocationListener {
             });
 
 
+            int map_id_save = activity.getIntent().getExtras().getInt("map_id");
+
             saveButton = view.findViewById(R.id.save_button);
             saveButton.setOnClickListener(v -> {
                 System.out.println("click");
-                File localFile = new File(getActivity().getExternalFilesDir(null) + "/prova.kml");
+                File localFile = new File(activity.getExternalFilesDir(null) +
+                        Utilities.MAP_NAME_STRING + map_id_save);
                 try {
                     localFile.createNewFile();
                 } catch (IOException e) {
@@ -253,8 +266,8 @@ public class MapFragment extends Fragment implements LocationListener {
                 }
             });
 
-
-            //load the map
+            //load the map (markers and path)
+            int map_to_be_loaded = activity.getIntent().getExtras().getInt("map_to_be_loaded");
             Drawable defaultMarker = AppCompatResources.getDrawable(activity, R.drawable.forest);
             Bitmap defaultBitmap = ((BitmapDrawable) defaultMarker).getBitmap();
             Style defaultStyle = new Style(defaultBitmap, 0x901010AA, 3.0f, 0x20AA1010);
@@ -263,7 +276,7 @@ public class MapFragment extends Fragment implements LocationListener {
 
             KmlDocument kmlDocument = new KmlDocument();
 
-            File f = new File("/storage/emulated/0/Android/data/com.example.mappis/files/prova.kml");
+            File f = new File(activity.getExternalFilesDir(null) + Utilities.MAP_NAME_STRING + map_to_be_loaded);
 
             if (f.exists()) {
                 kmlDocument.parseKMLFile(f);
