@@ -13,10 +13,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -46,6 +49,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.io.File;
 import java.io.IOException;
 import java.io.UTFDataFormatException;
+import java.lang.reflect.Type;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -75,6 +79,8 @@ public class MapFragment extends Fragment implements LocationListener {
     protected ImageButton saveButton;
     protected ImageButton trackButton;
 
+    private int map_id_save;
+
     private MapView mMapView;
 
     @Override
@@ -84,13 +90,17 @@ public class MapFragment extends Fragment implements LocationListener {
         this.activity = getActivity();
 
         if (activity != null) {
+            map_id_save = activity.getIntent().getExtras().getInt("map_id");
             OnBackPressedCallback callback = new OnBackPressedCallback(true) {
                 @Override
                 public void handleOnBackPressed() {
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                    builder.setMessage("Data will be lost").setPositiveButton(
-                            "OK", (dialog, which) -> {
+                    builder.setMessage("Are you sure you want to go back to the home?").setPositiveButton(
+                            "YES", (dialog, which) -> {
                                 Intent intent = new Intent(getActivity(), MainActivity.class);
+
+                                saveMap();
+
                                 activity.startActivity(intent);
                                 activity.finish();
                             }
@@ -128,7 +138,7 @@ public class MapFragment extends Fragment implements LocationListener {
             final Context context = this.getActivity();
             final DisplayMetrics dm = activity.getResources().getDisplayMetrics();
 
-            this.mCompassOverlay = new CompassOverlay(activity, new InternalCompassOrientationProvider(activity),
+            this.mCompassOverlay = new CompassOverlay(context, new InternalCompassOrientationProvider(context),
                     mMapView);
             this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(context),
                     mMapView);
@@ -140,6 +150,7 @@ public class MapFragment extends Fragment implements LocationListener {
             mRotationGestureOverlay = new RotationGestureOverlay(mMapView);
             mRotationGestureOverlay.setEnabled(true);
 
+
             mMapView.getController().setZoom(20.0);
             mMapView.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
             mMapView.setTilesScaledToDpi(true);
@@ -148,6 +159,21 @@ public class MapFragment extends Fragment implements LocationListener {
             mMapView.getOverlays().add(this.mLocationOverlay);
             mMapView.getOverlays().add(this.mCompassOverlay);
             mMapView.getOverlays().add(this.mScaleBarOverlay);
+            mMapView.getOverlays().add(mRotationGestureOverlay);
+
+            mLocationOverlay.enableMyLocation();
+            mCompassOverlay.enableCompass();
+
+            float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, 12.7f,
+                    activity.getResources().getDisplayMetrics());
+
+            mScaleBarOverlay.setAlignBottom(true);
+            mScaleBarOverlay.setAlignRight(false);
+            mScaleBarOverlay.setScaleBarOffset((int) (context.getResources()
+                    .getDisplayMetrics().widthPixels / 2 - px), 15);
+
+            mLocationOverlay.enableFollowLocation();
+            mLocationOverlay.setOptionsMenuEnabled(true);
 
             //map type loading
             String value = getActivity().getIntent().getExtras().getString("map_type");
@@ -172,18 +198,13 @@ public class MapFragment extends Fragment implements LocationListener {
             } else {
                 mMapView.setTileSource(TileSourceFactory.MAPNIK);
             }
-
-            mLocationOverlay.enableMyLocation();
-            mLocationOverlay.enableFollowLocation();
-            mLocationOverlay.setOptionsMenuEnabled(true);
-            mCompassOverlay.enableCompass();
-
             trackRecorder = new TrackRecorder(mMapView, view);
 
             btCenterMap = view.findViewById(R.id.ic_center_map);
             btCenterMap.setOnClickListener(v -> {
                 if (currentLocation != null) {
-                    GeoPoint myPosition = new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
+                    GeoPoint myPosition = new GeoPoint(currentLocation.getLatitude(),
+                            currentLocation.getLongitude());
                     mMapView.getController().animateTo(myPosition);
                 }
             });
@@ -193,7 +214,8 @@ public class MapFragment extends Fragment implements LocationListener {
             pencilButton.setOnClickListener(v -> {
                 AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
                 if (appCompatActivity != null) {
-                    AmbilWarnaDialog dialog = new AmbilWarnaDialog(activity, TrackRecorder.COLOR, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                    AmbilWarnaDialog dialog = new AmbilWarnaDialog(activity, TrackRecorder.COLOR,
+                            new AmbilWarnaDialog.OnAmbilWarnaListener() {
                         @Override
                         public void onCancel(AmbilWarnaDialog dialog) {
                             //do nothing
@@ -227,11 +249,6 @@ public class MapFragment extends Fragment implements LocationListener {
                 }
             });
 
-            saveButton = view.findViewById(R.id.save_button);
-            saveButton.setOnClickListener(v -> {
-
-            });
-
             //tracking button
             trackButton = view.findViewById(R.id.track_button);
             trackButton.setOnClickListener(v -> {
@@ -246,41 +263,32 @@ public class MapFragment extends Fragment implements LocationListener {
                 }
             });
 
-
-            int map_id_save = activity.getIntent().getExtras().getInt("map_id");
-
+            //save map when save button is clicked
             saveButton = view.findViewById(R.id.save_button);
             saveButton.setOnClickListener(v -> {
-                System.out.println("click");
-                File localFile = new File(activity.getExternalFilesDir(null) +
-                        Utilities.MAP_NAME_STRING + map_id_save);
-                try {
-                    localFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                System.out.println(localFile);
-                if (localFile.exists()) {
-                    Utilities.kmlDocument.saveAsKML(localFile);
-                    System.out.println("save");
-                }
+                saveMap();
+                Toast.makeText(activity, "Map updated",
+                        Toast.LENGTH_SHORT).show();
             });
 
             //load the map (markers and path)
             int map_to_be_loaded = activity.getIntent().getExtras().getInt("map_to_be_loaded");
             Drawable defaultMarker = AppCompatResources.getDrawable(activity, R.drawable.forest);
             Bitmap defaultBitmap = ((BitmapDrawable) defaultMarker).getBitmap();
-            Style defaultStyle = new Style(defaultBitmap, 0x901010AA, 3.0f, 0x20AA1010);
+            Style defaultStyle = new Style(defaultBitmap, 0x901010AA,
+                    3.0f, 0x20AA1010);
 
             MyKmlStyler styler = new MyKmlStyler(Utilities.kmlDocument, mMapView, getActivity());
 
             KmlDocument kmlDocument = new KmlDocument();
 
-            File f = new File(activity.getExternalFilesDir(null) + Utilities.MAP_NAME_STRING + map_to_be_loaded);
+            File f = new File(activity.getExternalFilesDir(null) +
+                    Utilities.MAP_NAME_STRING + map_to_be_loaded);
 
             if (f.exists()) {
                 kmlDocument.parseKMLFile(f);
-                FolderOverlay kmlOverlay = (FolderOverlay) kmlDocument.mKmlRoot.buildOverlay(mMapView, null, styler, kmlDocument);
+                FolderOverlay kmlOverlay = (FolderOverlay) kmlDocument.mKmlRoot
+                        .buildOverlay(mMapView, null, styler, kmlDocument);
                 mMapView.getOverlays().add(kmlOverlay);
                 mMapView.invalidate();
             }
@@ -300,7 +308,7 @@ public class MapFragment extends Fragment implements LocationListener {
         mCompassOverlay.disableCompass();
         mLocationOverlay.disableFollowLocation();
         mLocationOverlay.disableMyLocation();
-        mScaleBarOverlay.enableScaleBar();
+        mScaleBarOverlay.disableScaleBar();
     }
 
     @Override
@@ -356,7 +364,8 @@ public class MapFragment extends Fragment implements LocationListener {
 
         mLocationOverlay.enableFollowLocation();
         mLocationOverlay.enableMyLocation();
-        mScaleBarOverlay.disableScaleBar();
+        mCompassOverlay.enableCompass();
+        mScaleBarOverlay.enableScaleBar();
     }
 
     @Override
@@ -370,7 +379,6 @@ public class MapFragment extends Fragment implements LocationListener {
                     "My Track" + TRACK_NUMBER, new GeoPoint(this.currentLocation), true);
             newTrack = false;
         }
-
     }
 
     @Override
@@ -389,7 +397,7 @@ public class MapFragment extends Fragment implements LocationListener {
                                  String message,
                                  final String permission,
                                  final int permissionRequestCode) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok,
@@ -398,7 +406,21 @@ public class MapFragment extends Fragment implements LocationListener {
     }
 
     private void requestPermission(String permissionName, int permissionRequestCode) {
-        ActivityCompat.requestPermissions(getActivity(),
+        ActivityCompat.requestPermissions(activity,
                 new String[]{permissionName}, permissionRequestCode);
+    }
+
+    private void saveMap() {
+        File localFile = new File(activity.getExternalFilesDir(null) +
+                Utilities.MAP_NAME_STRING + map_id_save);
+        try {
+            localFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(localFile);
+        if (localFile.exists()) {
+            Utilities.kmlDocument.saveAsKML(localFile);
+        }
     }
 }
