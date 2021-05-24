@@ -25,4 +25,5 @@
     <string name="image_of_the_map_in_the_card">Image of the map in the card</string>
     <string name="data">Data</string>
     <string name="comment">Comment</string>
+    <string name="delete_map">DELETE MAP</string>
 </resources>
