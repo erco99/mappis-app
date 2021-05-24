@@ -49,4 +49,12 @@ public class CardViewModel extends AndroidViewModel {
         return cardItems.getValue() == null ? null : cardItems.getValue().get(position);
     }
 
+    public void deleteCardItem(int itemId) {
+        repository.deleteCardItem(itemId);
+    }
+
+    public void deleteComments(int cardItemId) {
+        repository.deleteComments(cardItemId);
+    }
+
 }

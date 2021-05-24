@@ -2,6 +2,7 @@ package com.example.mappis.Database;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -30,4 +31,11 @@ public interface CardItemDAO {
 
     @Query("SELECT MAX(item_id) FROM item")
     LiveData<Integer> getLastId();
+
+    @Query("DELETE FROM item WHERE item_id = :itemId")
+    void deleteCardItem(int itemId);
+
+    @Query("DELETE FROM comment WHERE card_item_id = :cardItemId")
+    void deleteComments(int cardItemId);
+
 }

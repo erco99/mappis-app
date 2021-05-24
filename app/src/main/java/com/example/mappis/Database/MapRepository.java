@@ -41,4 +41,11 @@ public class MapRepository {
         MapDatabase.databaseWriteExecutor.execute(() -> cardItemDAO.addComment(comment));
     }
 
+    public void deleteCardItem(final int itemId) {
+        MapDatabase.databaseWriteExecutor.execute(() -> cardItemDAO.deleteCardItem(itemId));
+    }
+    public void deleteComments(final int cardItemId) {
+        MapDatabase.databaseWriteExecutor.execute(() -> cardItemDAO.deleteComments(cardItemId));
+    }
+
 }
