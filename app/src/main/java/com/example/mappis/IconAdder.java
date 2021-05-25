@@ -34,7 +34,6 @@ public class IconAdder {
         GeoPoint point = new GeoPoint(currentLocation);
 
         marker.setPosition(point);
-        marker.setAnchor(Marker.ANCHOR_LEFT, Marker.ANCHOR_TOP);
 
         marker.setInfoWindow(null);
 
@@ -72,7 +71,7 @@ public class IconAdder {
                 GeoPoint geopoint = marker.getPosition();
                 //poiMarker.setDraggable(false);
 
-                Drawable defaultMarker = AppCompatResources.getDrawable(activity, R.drawable.woodland);
+                Drawable defaultMarker = AppCompatResources.getDrawable(activity, R.drawable.map_icons_woodland);
                 Bitmap bitmap = ((BitmapDrawable)defaultMarker).getBitmap();
                 Style style = new Style(bitmap, 0x901010AA, 3.0f, 0x20AA1010);
 

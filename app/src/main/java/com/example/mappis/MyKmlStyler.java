@@ -47,7 +47,7 @@ public class MyKmlStyler implements KmlFeature.Styler {
     public void onPoint(Marker marker, KmlPlacemark kmlPlacemark, KmlPoint kmlPoint) {
 
         if(activity != null) {
-            Drawable defaultMarker = AppCompatResources.getDrawable(activity, R.drawable.forest);
+            Drawable defaultMarker = AppCompatResources.getDrawable(activity, R.drawable.person);
             Bitmap defaultBitmap = ((BitmapDrawable) defaultMarker).getBitmap();
             Style prova = new Style(defaultBitmap, 0x901010AA, 3.0f, 0x20AA1010);
 

@@ -273,7 +273,7 @@ public class MapFragment extends Fragment implements LocationListener {
 
             //load the map (markers and path)
             int map_to_be_loaded = activity.getIntent().getExtras().getInt("map_to_be_loaded");
-            Drawable defaultMarker = AppCompatResources.getDrawable(activity, R.drawable.forest);
+            Drawable defaultMarker = AppCompatResources.getDrawable(activity, R.drawable.person);
             Bitmap defaultBitmap = ((BitmapDrawable) defaultMarker).getBitmap();
             Style defaultStyle = new Style(defaultBitmap, 0x901010AA,
                     3.0f, 0x20AA1010);
