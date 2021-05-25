@@ -1,10 +1,14 @@
 package com.example.mappis;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.widget.EditText;
 
 import androidx.appcompat.content.res.AppCompatResources;
 
@@ -25,7 +29,7 @@ public class IconAdder {
         this.activity = activity;
     }
 
-    public void insertIcon(int image) {
+    public void insertDragIcon(int image) {
         Marker marker = new Marker(map);
         GeoPoint point = new GeoPoint(currentLocation);
 
@@ -42,7 +46,22 @@ public class IconAdder {
         marker.setIcon(AppCompatResources.getDrawable(activity, image));
     }
 
-    public void applyDraggableListener(Marker poiMarker) {
+    public void insertTextIcon(int image) {
+        Marker marker = new Marker(map);
+        GeoPoint point = new GeoPoint(currentLocation);
+
+        marker.setPosition(point);
+
+
+        map.getOverlays().add(marker);
+        map.invalidate();
+
+        insertTextMarker(marker);
+        applyDraggableListener(marker);
+        marker.setIcon(AppCompatResources.getDrawable(activity, image));
+    }
+
+    private void applyDraggableListener(Marker poiMarker) {
         poiMarker.setDraggable( true);
         poiMarker.setOnMarkerDragListener(new Marker.OnMarkerDragListener() {
             @Override
@@ -69,4 +88,27 @@ public class IconAdder {
         });
     }
 
+    public void insertTextMarker(Marker poiMarker) {
+        final EditText input = new EditText(activity);
+        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+
+        alert.setTitle("Insert text");
+        alert.setView(input);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                poiMarker.setTitle(input.getText().toString());
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                return;
+            }
+        });
+        Dialog dialog = alert.create();
+        dialog.show();
+
+    }
 }
