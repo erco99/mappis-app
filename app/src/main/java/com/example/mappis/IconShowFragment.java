@@ -1,6 +1,5 @@
 package com.example.mappis;
 
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,7 +29,7 @@ public class IconShowFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.icon_grid, null);
+        View view = inflater.inflate(R.layout.icon_grid, container, false);
 
         GridView gridView = view.findViewById(R.id.gridview);
         getDialog().setTitle("Titolo prova");
@@ -40,10 +39,13 @@ public class IconShowFragment extends DialogFragment {
 
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             IconAdder iconAdder = new IconAdder(currentLocation, map, getActivity());
-            if(currentLocation != null && images != Utilities.pencil_type_icons) {
-                iconAdder.insertIcon(images[position]);
-            } else if(currentLocation != null){
-                TrackRecorder.COLOR = Color.BLUE;
+            if(currentLocation != null) {
+                if(images == Utilities.drag_icons) {
+                    iconAdder.insertDragIcon(images[position]);
+                }
+                if(images == Utilities.text_icons) {
+                    iconAdder.insertTextIcon(images[position]);
+                }
             }
         });
 
