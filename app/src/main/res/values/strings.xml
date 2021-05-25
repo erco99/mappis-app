@@ -26,4 +26,5 @@
     <string name="data">Data</string>
     <string name="comment">Comment</string>
     <string name="delete_map">DELETE MAP</string>
+    <string name="insert_your_marker_text">Insert your marker text</string>
 </resources>
