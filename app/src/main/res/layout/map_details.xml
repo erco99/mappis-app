@@ -22,7 +22,7 @@
             android:id="@+id/mapDetailsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/mandali"
+            android:fontFamily="@font/agave_nerd_font"
             android:text="@string/map_details"
             android:textColor="#000000"
             android:textSize="30sp"
@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:fontFamily="@font/mandali"
+                android:fontFamily="@font/agave_nerd_font"
                 android:text="@string/comments"
                 android:textColor="#000000"
                 android:textSize="20sp"
@@ -104,6 +104,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:hint="@string/add_comment"
+                    android:fontFamily="@font/agave_nerd_font"
                     android:imeOptions="flagNoExtractUi"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -117,6 +118,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="#252923"
                 android:text="@string/add"
+                android:fontFamily="@font/agave_nerd_font"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/commentListView" />
 
@@ -129,6 +131,7 @@
                 android:backgroundTint="#cf080c"
                 android:text="@string/delete_map"
                 android:textSize="17sp"
+                android:fontFamily="@font/agave_nerd_font"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
