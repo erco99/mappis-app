@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.ImageFilterButton;
 import androidx.fragment.app.Fragment;
@@ -25,6 +26,8 @@ import com.example.mappis.CardMaps.CardViewModel;
 import com.example.mappis.CardMaps.Comments.Comment;
 import com.example.mappis.CardMaps.Comments.CommentAdapter;
 import com.google.android.material.textfield.TextInputEditText;
+
+import org.osmdroid.bonuspack.kml.KmlDocument;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -64,10 +67,12 @@ public class MapDetailsFragment extends Fragment {
             CardViewModel cardViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(CardViewModel.class);
 
             cardViewModel.getSelected().observe(getViewLifecycleOwner(), cardItem -> {
+
+                System.out.println("dads " + cardItem.getMapType());
                 mapImageView.setOnClickListener(v -> {
                     Intent intent = new Intent(activity, MapActivity.class);
                     intent.putExtra("map_to_be_loaded", cardItem.getItemId());
-
+                    intent.putExtra("map_type", cardItem.getMapType());
                     activity.startActivity(intent);
                     activity.finish();
                 });
@@ -88,17 +93,23 @@ public class MapDetailsFragment extends Fragment {
                 });
 
                 deleteMapButton.setOnClickListener(v -> {
-                    cardViewModel.deleteCardItem(cardItem.getItemId());
-                    cardViewModel.deleteComments(cardItem.getItemId());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    builder.setMessage("Are you sure you want to delete this map?").setPositiveButton(
+                            "YES", (dialog, which) -> {
+                                cardViewModel.deleteCardItem(cardItem.getItemId());
+                                cardViewModel.deleteComments(cardItem.getItemId());
 
-                    File file = new File(activity.getExternalFilesDir(null) +
-                            Utilities.MAP_NAME_STRING + cardItem.getItemId());
-                    file.delete();
+                                File file = new File(activity.getExternalFilesDir(null) +
+                                        Utilities.MAP_NAME_STRING + cardItem.getItemId());
+                                file.delete();
 
-                    ((AppCompatActivity) activity).getSupportFragmentManager().popBackStack();
-                    Toast.makeText(activity, "Map successfully deleted", Toast.LENGTH_SHORT).show();
+                                ((AppCompatActivity) activity).getSupportFragmentManager().popBackStack();
+                                Toast.makeText(activity, "Map successfully deleted", Toast.LENGTH_SHORT).show();
+                            }
+                    ).setNegativeButton("CANCEL", (dialog, which) -> dialog.dismiss());
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 });
-
             });
 
             ImageFilterButton goBack = view.findViewById(R.id.goBackButton);

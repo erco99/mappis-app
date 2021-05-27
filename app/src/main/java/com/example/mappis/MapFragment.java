@@ -55,6 +55,9 @@ import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class MapFragment extends Fragment implements LocationListener {
 
+    private boolean CREATE = false;
+    private int CURRENT_MAP_ID;
+
     private Activity activity;
     private final int PLAY = 1;
     private final int PAUSE = 0;
@@ -99,7 +102,13 @@ public class MapFragment extends Fragment implements LocationListener {
                             "YES", (dialog, which) -> {
                                 Intent intent = new Intent(getActivity(), MainActivity.class);
 
+                                if(TRACK_STATUS == PLAY) {
+                                    TRACK_STATUS = PAUSE;
+                                }
+
                                 saveMap();
+
+                                Utilities.kmlDocument = new KmlDocument();
 
                                 activity.startActivity(intent);
                                 activity.finish();
@@ -273,6 +282,9 @@ public class MapFragment extends Fragment implements LocationListener {
 
             //load the map (markers and path)
             int map_to_be_loaded = activity.getIntent().getExtras().getInt("map_to_be_loaded");
+            boolean create = activity.getIntent().getExtras().getBoolean("create");
+            CREATE = create;
+
             Drawable defaultMarker = AppCompatResources.getDrawable(activity, R.drawable.person);
             Bitmap defaultBitmap = ((BitmapDrawable) defaultMarker).getBitmap();
             Style defaultStyle = new Style(defaultBitmap, 0x901010AA,
@@ -282,16 +294,25 @@ public class MapFragment extends Fragment implements LocationListener {
 
             KmlDocument kmlDocument = new KmlDocument();
 
-            File f = new File(activity.getExternalFilesDir(null) +
-                    Utilities.MAP_NAME_STRING + map_to_be_loaded);
-
-            if (f.exists()) {
-                kmlDocument.parseKMLFile(f);
-                FolderOverlay kmlOverlay = (FolderOverlay) kmlDocument.mKmlRoot
-                        .buildOverlay(mMapView, null, styler, kmlDocument);
-                mMapView.getOverlays().add(kmlOverlay);
-                mMapView.invalidate();
+            File f = null;
+            if(CREATE) {
+                CREATE = false;
+                CURRENT_MAP_ID = map_id_save;
+            } else {
+                f = new File(activity.getExternalFilesDir(null) +
+                        Utilities.MAP_NAME_STRING + map_to_be_loaded);
+                if (f.exists()) {
+                    kmlDocument.parseKMLFile(f);
+                    FolderOverlay kmlOverlay = (FolderOverlay) kmlDocument.mKmlRoot
+                            .buildOverlay(mMapView, null, null, kmlDocument);
+                    Utilities.kmlDocument.mKmlRoot.addOverlay(kmlOverlay, Utilities.kmlDocument);
+                    mMapView.getOverlays().add(kmlOverlay);
+                    mMapView.invalidate();
+                    System.out.println("LOADING " + f);
+                    CURRENT_MAP_ID = map_to_be_loaded;
+                }
             }
+
         } else {
             System.out.println("Activity is null");
         }
@@ -412,7 +433,7 @@ public class MapFragment extends Fragment implements LocationListener {
 
     private void saveMap() {
         File localFile = new File(activity.getExternalFilesDir(null) +
-                Utilities.MAP_NAME_STRING + map_id_save);
+                Utilities.MAP_NAME_STRING + CURRENT_MAP_ID);
         try {
             localFile.createNewFile();
         } catch (IOException e) {

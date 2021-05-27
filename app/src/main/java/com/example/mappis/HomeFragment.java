@@ -26,6 +26,7 @@ public class HomeFragment extends Fragment implements OnItemListener {
 
     private CardAdapter adapter;
     private CardViewModel cardViewModel;
+    private RecyclerView recyclerView;
 
     @Nullable
     @Override
@@ -55,6 +56,17 @@ public class HomeFragment extends Fragment implements OnItemListener {
                         "Create map fragment");
             });
 
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    if (dy > 0) {
+                        floatingActionButton.hide();
+                    } else if (dy < 0) {
+                        floatingActionButton.show();
+                    }
+                }
+            });
+
             ImageFilterButton settingsButton = view.findViewById(R.id.SettingsImageFilterButton);
             settingsButton.setOnClickListener(v -> {
                 Utilities.insertFragment((AppCompatActivity) getActivity(), new SettingsFragment(),
@@ -64,7 +76,7 @@ public class HomeFragment extends Fragment implements OnItemListener {
     }
 
     private void setRecyclerView(final Activity activity) {
-        RecyclerView recyclerView = getView().findViewById(R.id.recycler_view);
+        recyclerView = getView().findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         final OnItemListener listener = this;
 

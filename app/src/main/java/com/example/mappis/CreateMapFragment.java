@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.ImageFilterButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
@@ -25,7 +24,6 @@ import com.example.mappis.CardMaps.AddCardViewModel;
 import com.example.mappis.CardMaps.CardItem;
 import com.example.mappis.CardMaps.CardViewModel;
 import com.google.android.material.textfield.TextInputEditText;
-import com.j256.ormlite.stmt.query.In;
 
 public class CreateMapFragment extends Fragment {
 
@@ -56,7 +54,6 @@ public class CreateMapFragment extends Fragment {
             addCardViewModel = new ViewModelProvider((ViewModelStoreOwner) activity)
                     .get(AddCardViewModel.class);
 
-
             CardViewModel cardViewModel = new ViewModelProvider((ViewModelStoreOwner) activity)
                     .get(CardViewModel.class);
 
@@ -78,12 +75,14 @@ public class CreateMapFragment extends Fragment {
                     addCardViewModel.addCardItem(new CardItem(
                             id,
                             mapName.getText().toString(),
-                            mapDescription.getText().toString()));
+                            mapDescription.getText().toString(),
+                            spinner.getSelectedItem().toString()));
 
                     Intent map_intent = new Intent(activity, MapActivity.class);
 
                     map_intent.putExtra("map_type", spinner.getSelectedItem().toString());
                     map_intent.putExtra("map_id", id);
+                    map_intent.putExtra("create", true);
 
                     activity.startActivity(map_intent);
                     activity.finish();

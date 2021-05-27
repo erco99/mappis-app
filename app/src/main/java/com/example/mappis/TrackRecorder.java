@@ -25,9 +25,10 @@ public class TrackRecorder {
     protected View view;
 
     static int COLOR = Color.GRAY;
+    static final float LINE_WIDTH = 26.0f;
 
     protected FolderOverlay mKmlOverlay = null;
-    public static KmlDocument mKmlDocument = new KmlDocument();
+    private KmlDocument mKmlDocument = new KmlDocument();
 
     public TrackRecorder(MapView map, View view) {
         this.map = map;
@@ -40,7 +41,6 @@ public class TrackRecorder {
         KmlTrack t;
         KmlFeature f = mKmlDocument.mKmlRoot.findFeatureId(trackId, false);
         if (f == null && newTrack)
-
             t = createTrack(trackId, trackName);
         else if (!(f instanceof KmlPlacemark))
             //id already defined but is not a PlaceMark
@@ -53,7 +53,6 @@ public class TrackRecorder {
             else
                 t = (KmlTrack) p.mGeometry;
         }
-        //TODO check if current location is really different from last point of the track
         //record in the track the current location at current time:
         t.add(currentLocation, new Date());
         //refresh KML:
@@ -70,7 +69,7 @@ public class TrackRecorder {
         //set a color to this track by creating a style:
         Style s = new Style();
 
-        s.mLineStyle = new LineStyle(COLOR, 26.0f);
+        s.mLineStyle = new LineStyle(COLOR, LINE_WIDTH);
         p.mStyle = mKmlDocument.addStyle(s);
         return t;
     }
@@ -80,7 +79,9 @@ public class TrackRecorder {
             mKmlOverlay.closeAllInfoWindows();
             map.getOverlays().remove(mKmlOverlay);
         }
-        mKmlOverlay = (FolderOverlay)mKmlDocument.mKmlRoot.buildOverlay(map, buildDefaultStyle(), null, mKmlDocument);
+        mKmlOverlay = (FolderOverlay) mKmlDocument.mKmlRoot.buildOverlay(map, buildDefaultStyle(), null, mKmlDocument);
+
+        Utilities.kmlDocument.mKmlRoot.addOverlay(mKmlOverlay, Utilities.kmlDocument);
         map.getOverlays().add(mKmlOverlay);
         map.invalidate();
     }
@@ -88,7 +89,7 @@ public class TrackRecorder {
     private Style buildDefaultStyle(){
         Drawable defaultKmlMarker = ResourcesCompat.getDrawable(view.getResources(), R.drawable.ic_baseline_settings_24, null);
         Bitmap bitmap = Bitmap.createBitmap(defaultKmlMarker.getIntrinsicWidth(), defaultKmlMarker.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        return new Style(bitmap, 0x901010AA, 3.0f, 0x20AA1010);
+        return new Style(bitmap, COLOR, LINE_WIDTH, COLOR);
     }
 
 }
