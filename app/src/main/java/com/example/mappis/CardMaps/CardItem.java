@@ -17,10 +17,19 @@ public class CardItem {
     @ColumnInfo(name = "item_map_description")
     private final String mapDescription;
 
-    public CardItem(int itemId, String mapName, String mapDescription) {
+
+    @ColumnInfo(name = "item_map_type")
+    private final String mapType;
+
+    public CardItem(int itemId, String mapName, String mapDescription, String mapType) {
         this.itemId = itemId;
         this.mapName = mapName;
         this.mapDescription = mapDescription;
+        this.mapType = mapType;
+    }
+
+    public String getMapType() {
+        return mapType;
     }
 
     public String getMapName() {
