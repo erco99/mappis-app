@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,8 @@ public class MapDetailsFragment extends Fragment {
     private ListView listView;
     private ImageView mapImageView;
     private Button deleteMapButton;
+    private TextView mapNameStat;
+    private TextView mapTypeStat;
 
     @Nullable
     @Override
@@ -62,13 +65,16 @@ public class MapDetailsFragment extends Fragment {
             listView = view.findViewById(R.id.commentListView);
             mapImageView = view.findViewById(R.id.details_map);
             deleteMapButton = view.findViewById(R.id.delete_map_button);
+            mapNameStat = view.findViewById(R.id.mapNameStat);
+            mapTypeStat = view.findViewById(R.id.mapTypeStat);
 
             AddCardViewModel addCardViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(AddCardViewModel.class);
             CardViewModel cardViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(CardViewModel.class);
 
             cardViewModel.getSelected().observe(getViewLifecycleOwner(), cardItem -> {
+                mapNameStat.setText(cardItem.getMapName());
+                mapTypeStat.setText(cardItem.getMapType());
 
-                System.out.println("dads " + cardItem.getMapType());
                 mapImageView.setOnClickListener(v -> {
                     Intent intent = new Intent(activity, MapActivity.class);
                     intent.putExtra("map_to_be_loaded", cardItem.getItemId());
