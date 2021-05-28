@@ -122,6 +122,76 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/commentListView" />
 
+
+            <TextView
+                android:id="@+id/statistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:fontFamily="@font/agave_nerd_font"
+                android:text="@string/map_statistics"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
+            <TextView
+                android:id="@+id/mapNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/agave_nerd_font"
+                android:text="@string/map_name_stat"
+                android:textColor="#000000"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/statistics" />
+
+            <TextView
+                android:id="@+id/mapNameStat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/agave_nerd_font"
+                android:text="@string/nan"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mapNameTextView" />
+
+
+            <TextView
+                android:id="@+id/mapTypeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/agave_nerd_font"
+                android:text="@string/map_type_stat"
+                android:textColor="#000000"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mapNameStat" />
+
+            <TextView
+                android:id="@+id/mapTypeStat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/agave_nerd_font"
+                android:text="@string/nan"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mapTypeTextView" />
+
             <Button
                 android:id="@+id/delete_map_button"
                 android:layout_width="wrap_content"
@@ -129,13 +199,13 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="20dp"
                 android:backgroundTint="#cf080c"
+                android:fontFamily="@font/agave_nerd_font"
                 android:text="@string/delete_map"
                 android:textSize="17sp"
-                android:fontFamily="@font/agave_nerd_font"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+                app:layout_constraintTop_toBottomOf="@id/mapTypeStat" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
