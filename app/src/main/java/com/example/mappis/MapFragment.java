@@ -14,7 +14,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +47,6 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UTFDataFormatException;
-import java.lang.reflect.Type;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -108,7 +105,8 @@ public class MapFragment extends Fragment implements LocationListener {
 
                                 saveMap();
 
-                                Utilities.kmlDocument = new KmlDocument();
+                                Utilities.kmlDocumentMarkers = new KmlDocument();
+                                Utilities.kmlDocumentTrack = new KmlDocument();
 
                                 activity.startActivity(intent);
                                 activity.finish();
@@ -290,23 +288,33 @@ public class MapFragment extends Fragment implements LocationListener {
             Style defaultStyle = new Style(defaultBitmap, 0x901010AA,
                     3.0f, 0x20AA1010);
 
-            MyKmlStyler styler = new MyKmlStyler(Utilities.kmlDocument, mMapView, getActivity());
+            MyKmlStyler styler = new MyKmlStyler(Utilities.kmlDocumentMarkers, mMapView, getActivity());
 
-            KmlDocument kmlDocument = new KmlDocument();
+            KmlDocument kmlDocumentMarkers = new KmlDocument();
+            KmlDocument kmlDocumentTrack = new KmlDocument();
 
             File f = null;
+            File f2 = null;
             if(CREATE) {
                 CREATE = false;
                 CURRENT_MAP_ID = map_id_save;
             } else {
                 f = new File(activity.getExternalFilesDir(null) +
-                        Utilities.MAP_NAME_STRING + map_to_be_loaded);
+                        Utilities.MAP_NAME_STRING + "markers_" + map_to_be_loaded);
+                f2 = new File(activity.getExternalFilesDir(null) +
+                        Utilities.MAP_NAME_STRING + "track_" + map_to_be_loaded);
                 if (f.exists()) {
-                    kmlDocument.parseKMLFile(f);
-                    FolderOverlay kmlOverlay = (FolderOverlay) kmlDocument.mKmlRoot
-                            .buildOverlay(mMapView, null, null, kmlDocument);
-                    Utilities.kmlDocument.mKmlRoot.addOverlay(kmlOverlay, Utilities.kmlDocument);
-                    mMapView.getOverlays().add(kmlOverlay);
+                    kmlDocumentMarkers.parseKMLFile(f);
+                    FolderOverlay kmlOverlayMarkers = (FolderOverlay) kmlDocumentMarkers.mKmlRoot
+                            .buildOverlay(mMapView, null, styler, kmlDocumentMarkers);
+
+                    kmlDocumentTrack.parseKMLFile(f2);
+                    FolderOverlay kmlOverlayTrack = (FolderOverlay) kmlDocumentTrack.mKmlRoot
+                            .buildOverlay(mMapView, null, null, kmlDocumentTrack);
+                    Utilities.kmlDocumentMarkers.mKmlRoot.addOverlay(kmlOverlayMarkers, Utilities.kmlDocumentMarkers);
+                    Utilities.kmlDocumentTrack.mKmlRoot.addOverlay(kmlOverlayTrack, Utilities.kmlDocumentTrack);
+                    mMapView.getOverlays().add(kmlOverlayMarkers);
+                    mMapView.getOverlays().add(kmlOverlayTrack);
                     mMapView.invalidate();
                     System.out.println("LOADING " + f);
                     CURRENT_MAP_ID = map_to_be_loaded;
@@ -432,16 +440,21 @@ public class MapFragment extends Fragment implements LocationListener {
     }
 
     private void saveMap() {
-        File localFile = new File(activity.getExternalFilesDir(null) +
-                Utilities.MAP_NAME_STRING + CURRENT_MAP_ID);
+        File markersFile = new File(activity.getExternalFilesDir(null) +
+                Utilities.MAP_NAME_STRING + "markers_" + CURRENT_MAP_ID);
+        File trackFile = new File(activity.getExternalFilesDir(null) +
+                Utilities.MAP_NAME_STRING + "track_" + CURRENT_MAP_ID);
+
         try {
-            localFile.createNewFile();
+            markersFile.createNewFile();
+            trackFile.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(localFile);
-        if (localFile.exists()) {
-            Utilities.kmlDocument.saveAsKML(localFile);
+        System.out.println(trackFile);
+        if (markersFile.exists() && trackFile.exists()) {
+            Utilities.kmlDocumentTrack.saveAsKML(trackFile);
+            Utilities.kmlDocumentMarkers.saveAsKML(markersFile);
         }
     }
 }

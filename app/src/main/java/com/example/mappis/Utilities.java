@@ -30,7 +30,8 @@ public class Utilities {
             R.drawable.map_icons_text_placeholder1, R.drawable.map_icons_text_placeholder2,
             R.drawable.map_icons_text_placeholder3, R.drawable.map_icons_text_placeholder4};
 
-    static KmlDocument kmlDocument = new KmlDocument();
+    static KmlDocument kmlDocumentMarkers = new KmlDocument();
+    static KmlDocument kmlDocumentTrack = new KmlDocument();
 
 
     static void insertFragment(AppCompatActivity activity, Fragment fragment, String tag){

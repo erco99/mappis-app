@@ -106,8 +106,11 @@ public class MapDetailsFragment extends Fragment {
                                 cardViewModel.deleteComments(cardItem.getItemId());
 
                                 File file = new File(activity.getExternalFilesDir(null) +
-                                        Utilities.MAP_NAME_STRING + cardItem.getItemId());
+                                        Utilities.MAP_NAME_STRING + "markers_" + cardItem.getItemId());
                                 file.delete();
+                                File file2 = new File(activity.getExternalFilesDir(null) +
+                                        Utilities.MAP_NAME_STRING + "track_" + cardItem.getItemId());
+                                file2.delete();
 
                                 ((AppCompatActivity) activity).getSupportFragmentManager().popBackStack();
                                 Toast.makeText(activity, "Map successfully deleted", Toast.LENGTH_SHORT).show();

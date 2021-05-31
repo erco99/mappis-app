@@ -1,7 +1,9 @@
 package com.example.mappis;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
@@ -40,25 +42,30 @@ public class MyKmlStyler implements KmlFeature.Styler {
 
     @Override
     public void onFeature(Overlay overlay, KmlFeature kmlFeature) {
+            System.out.println("sdsds" + kmlFeature.mExtendedData   );
 
     }
 
     @Override
     public void onPoint(Marker marker, KmlPlacemark kmlPlacemark, KmlPoint kmlPoint) {
 
+        String data = marker.getTitle();
+        int id = getImageId(data);
+        String type = getMarkerType(data);
+
         if(activity != null) {
-            Drawable defaultMarker = AppCompatResources.getDrawable(activity, R.drawable.person);
-            Bitmap defaultBitmap = ((BitmapDrawable) defaultMarker).getBitmap();
-            Style prova = new Style(defaultBitmap, 0x901010AA, 3.0f, 0x20AA1010);
+            Drawable defaultMarker = AppCompatResources.getDrawable(activity, id);
+            Bitmap defaultBitmap = toBitmap(defaultMarker);
+            Style style = new Style(defaultBitmap, 0x901010AA, 3.0f, 0x2010AA10);
 
-            System.out.println(kmlPlacemark.getExtendedData("category"));
+            kmlPoint.applyDefaultStyling(marker, style, kmlPlacemark, mKmlDocument, map);
 
-            if ("panda_area".equals(kmlPlacemark.getExtendedData("category"))) {
-                kmlPlacemark.mStyle = "prova-style";
-                System.out.println(kmlPlacemark.mStyle);
+            if(type.equals("drag")) {
+                marker.setInfoWindow(null);
             }
-            kmlPoint.applyDefaultStyling(marker, prova, kmlPlacemark, mKmlDocument, map);
         }
+
+
 
     }
 
@@ -76,4 +83,32 @@ public class MyKmlStyler implements KmlFeature.Styler {
     public void onTrack(Polyline polyline, KmlPlacemark kmlPlacemark, KmlTrack kmlTrack) {
 
     }
+
+    private Bitmap toBitmap(Drawable drawable) {
+        try {
+            Bitmap bitmap;
+
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+            return bitmap;
+        } catch (OutOfMemoryError e) {
+            // Handle the error
+            return null;
+        }
+    }
+
+
+    private int getImageId(String str) {
+        String result = str.split("-")[1];
+        String id = result.replaceAll("[^0-9]", "");
+        return Integer.parseInt(id);
+    }
+
+    private String getMarkerType(String str) {
+        return str.replaceAll("[^a-zA-Z ]", "");
+    }
+
 }

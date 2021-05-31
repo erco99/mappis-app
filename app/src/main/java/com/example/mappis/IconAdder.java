@@ -3,23 +3,13 @@ package com.example.mappis;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.widget.EditText;
 
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.res.ResourcesCompat;
 
-import org.osmdroid.bonuspack.kml.IconStyle;
 import org.osmdroid.bonuspack.kml.KmlDocument;
 import org.osmdroid.bonuspack.kml.KmlPlacemark;
-import org.osmdroid.bonuspack.kml.KmlPoint;
-import org.osmdroid.bonuspack.kml.KmlTrack;
-import org.osmdroid.bonuspack.kml.LineStyle;
-import org.osmdroid.bonuspack.kml.Style;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.FolderOverlay;
@@ -44,17 +34,15 @@ public class IconAdder {
         GeoPoint point = new GeoPoint(currentLocation);
         mKmlDocument = new KmlDocument();
 
-        FolderOverlay poiMarkers = new FolderOverlay();
-        map.getOverlays().add(poiMarkers);
-
         marker.setPosition(point);
         marker.setInfoWindow(null);
         marker.setIcon(AppCompatResources.getDrawable(activity, image));
+        marker.setTitle("- drag_" + image + " -");
 
         map.getOverlays().add(marker);
         map.invalidate();
 
-        applyDraggableListener(marker, image, mKmlDocument);
+        applyDraggableListener(marker, image);
     }
 
     public void insertTextIcon(int image) {
@@ -67,24 +55,25 @@ public class IconAdder {
 
         map.getOverlays().add(marker);
         map.invalidate();
+        insertTextMarker(marker, image);
 
-        insertTextMarker(marker);
-        applyDraggableListener(marker, image, mKmlDocument);
+        applyDraggableListener(marker, image);
     }
 
-    private void applyDraggableListener(Marker poiMarker, int image, KmlDocument mKmlDocument) {
+    private void applyDraggableListener(Marker poiMarker, int image) {
         poiMarker.setDraggable( true);
         poiMarker.setOnMarkerDragListener(new Marker.OnMarkerDragListener() {
             @Override
             public void onMarkerDragStart(Marker marker) {}
-
                 @Override
                 public void onMarkerDragEnd(Marker marker) {
                     /*GeoPoint geopoint = marker.getPosition();
                     poiMarker.setDraggable(false);
                     */
 
+                    KmlPlacemark kmlPlacemark = new KmlPlacemark(marker);
 
+                    Utilities.kmlDocumentMarkers.mKmlRoot.add(kmlPlacemark);
                 }
 
             @Override
@@ -92,27 +81,21 @@ public class IconAdder {
         });
     }
 
-    public void insertTextMarker(Marker poiMarker) {
+    public void insertTextMarker(Marker poiMarker, int image_id) {
         final EditText input = new EditText(activity);
         AlertDialog.Builder alert = new AlertDialog.Builder(activity);
 
         alert.setTitle("Insert text");
         alert.setView(input);
 
-        alert.setPositiveButton("Ok", (dialog, whichButton) -> poiMarker.setTitle(input.getText().toString()));
+        alert.setPositiveButton("Ok", (dialog, whichButton) -> poiMarker
+                .setTitle("- text_" + image_id + " -\n" + input.getText().toString()));
 
         alert.setNegativeButton("Cancel", (dialog, which) -> {});
 
         Dialog dialog = alert.create();
         dialog.show();
 
-    }
-
-    private Style buildStyle(){
-        Drawable defaultMarker = AppCompatResources.getDrawable(activity, R.drawable.person);
-        Bitmap defaultBitmap = ((BitmapDrawable) defaultMarker).getBitmap();
-        return new Style(defaultBitmap, 0x901010AA,
-                3.0f, 0x20AA1010);
     }
 
 }

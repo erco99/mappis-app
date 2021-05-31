@@ -70,6 +70,7 @@ public class TrackRecorder {
         Style s = new Style();
 
         s.mLineStyle = new LineStyle(COLOR, LINE_WIDTH);
+        System.out.println(s.mLineStyle);
         p.mStyle = mKmlDocument.addStyle(s);
         return t;
     }
@@ -81,7 +82,7 @@ public class TrackRecorder {
         }
         mKmlOverlay = (FolderOverlay) mKmlDocument.mKmlRoot.buildOverlay(map, buildDefaultStyle(), null, mKmlDocument);
 
-        Utilities.kmlDocument.mKmlRoot.addOverlay(mKmlOverlay, Utilities.kmlDocument);
+        Utilities.kmlDocumentTrack.mKmlRoot.addOverlay(mKmlOverlay, Utilities.kmlDocumentTrack);
         map.getOverlays().add(mKmlOverlay);
         map.invalidate();
     }

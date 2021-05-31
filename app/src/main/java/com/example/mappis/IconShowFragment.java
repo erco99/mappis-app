@@ -42,9 +42,11 @@ public class IconShowFragment extends DialogFragment {
             if(currentLocation != null) {
                 if(images == Utilities.drag_icons) {
                     iconAdder.insertDragIcon(images[position]);
+                    getDialog().cancel();
                 }
                 if(images == Utilities.text_icons) {
                     iconAdder.insertTextIcon(images[position]);
+                    getDialog().cancel();
                 }
             }
         });
