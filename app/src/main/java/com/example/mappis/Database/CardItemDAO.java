@@ -38,4 +38,6 @@ public interface CardItemDAO {
     @Query("DELETE FROM comment WHERE card_item_id = :cardItemId")
     void deleteComments(int cardItemId);
 
+    @Query("UPDATE item SET item_image_uri = :uri WHERE item_id = :id")
+    void changeImage(String uri, int id);
 }

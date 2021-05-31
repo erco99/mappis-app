@@ -61,6 +61,18 @@
                 android:foreground="?android:attr/actionBarItemBackground"
                 android:contentDescription="@string/clickable_image_for_map_loading" />
 
+            <Button
+                android:id="@+id/change_image_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Change map image"
+                android:backgroundTint="#252923"
+                android:fontFamily="@font/agave_nerd_font"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/details_map" />
+
             <TextView
                 android:id="@+id/map_comments"
                 android:layout_width="wrap_content"
@@ -73,7 +85,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/details_map" />
+                app:layout_constraintTop_toBottomOf="@+id/change_image_button" />
 
             <ListView
                 android:id="@+id/commentListView"

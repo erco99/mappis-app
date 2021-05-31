@@ -48,4 +48,8 @@ public class MapRepository {
         MapDatabase.databaseWriteExecutor.execute(() -> cardItemDAO.deleteComments(cardItemId));
     }
 
+    public void changeImage(final String uri, final int id) {
+        MapDatabase.databaseWriteExecutor.execute(() -> cardItemDAO.changeImage(uri, id));
+    }
+
 }

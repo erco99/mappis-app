@@ -12,6 +12,7 @@ public class Utilities {
 
     static final int REQUEST_ACCESS_FINE_LOCATION = 1;
     static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2;
+    static final int REQUEST_READ_EXTERNAL_STORAGE = 3;
 
     static final int[] drag_icons = {R.drawable.map_icons_standard_antenna,
             R.drawable.map_icons_standard_danger, R.drawable.map_icons_standard_fountain,

@@ -76,7 +76,8 @@ public class CreateMapFragment extends Fragment {
                             id,
                             mapName.getText().toString(),
                             mapDescription.getText().toString(),
-                            spinner.getSelectedItem().toString()));
+                            spinner.getSelectedItem().toString(),
+                            null));
 
                     Intent map_intent = new Intent(activity, MapActivity.class);
 

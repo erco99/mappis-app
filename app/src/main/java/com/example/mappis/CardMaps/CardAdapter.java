@@ -1,6 +1,7 @@
 package com.example.mappis.CardMaps;
 
 import android.app.Activity;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
         holder.nameTextView.setText(currentCardItem.getMapName());
         holder.descriptionTextView.setText(currentCardItem.getMapDescription());
+        if(currentCardItem.getMapImageUri() != null) {
+            holder.mapImageView.setImageBitmap(BitmapFactory.decodeFile(currentCardItem.getMapImageUri()));
+        }
     }
 
     @Override

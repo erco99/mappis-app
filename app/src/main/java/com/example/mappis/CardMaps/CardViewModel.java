@@ -57,4 +57,9 @@ public class CardViewModel extends AndroidViewModel {
         repository.deleteComments(cardItemId);
     }
 
+
+    public void changeImage(final String uri, final int id) {
+        repository.changeImage(uri, id);
+    }
+
 }
