@@ -95,12 +95,14 @@ public class MapDetailsFragment extends Fragment {
                         @Override
                         public void onActivityResult(ActivityResult result) {
                             // There are no request codes
-                            Uri uri = result.getData().getData();
-                            value = uri.toString();
+                            if(result.getData() != null) {
+                                Uri uri = result.getData().getData();
+                                value = uri.toString();
 
-                            setImage(activity, value);
+                                setImage(activity, value);
 
-                            mapImageView.setImageBitmap(uriToBitmap(uri, activity));
+                                mapImageView.setImageBitmap(uriToBitmap(uri, activity));
+                            }
                         }
                     });
 

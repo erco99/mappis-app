@@ -53,6 +53,8 @@ public class MyKmlStyler implements KmlFeature.Styler {
         int id = getImageId(data);
         String type = getMarkerType(data);
 
+        Utilities.number++;
+
         if(activity != null) {
             Drawable defaultMarker = AppCompatResources.getDrawable(activity, id);
             Bitmap defaultBitmap = toBitmap(defaultMarker);

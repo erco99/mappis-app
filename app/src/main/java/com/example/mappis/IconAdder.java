@@ -91,8 +91,11 @@ public class IconAdder {
         alert.setPositiveButton("Ok", (dialog, whichButton) -> poiMarker
                 .setTitle("- text_" + image_id + " -\n" + input.getText().toString()));
 
-        alert.setNegativeButton("Cancel", (dialog, which) -> {});
+        alert.setNegativeButton("Cancel", (dialog, which) -> poiMarker
+                .setTitle("- text_" + image_id + " -\n"));
 
+        alert.setOnCancelListener(dialog -> poiMarker
+                .setTitle("- text_" + image_id + " -\n"));
         Dialog dialog = alert.create();
         dialog.show();
 

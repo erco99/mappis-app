@@ -54,7 +54,7 @@ public class TrackRecorder {
                 t = (KmlTrack) p.mGeometry;
         }
         //record in the track the current location at current time:
-        t.add(currentLocation, new Date());
+        t.add(currentLocation, new Date()); 
         //refresh KML:
         updateUIWithKml();
     }

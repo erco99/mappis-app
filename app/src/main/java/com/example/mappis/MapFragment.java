@@ -2,7 +2,9 @@ package com.example.mappis;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,6 +14,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -39,8 +42,6 @@ import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.FolderOverlay;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
-import org.osmdroid.views.overlay.compass.CompassOverlay;
-import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
@@ -54,6 +55,7 @@ public class MapFragment extends Fragment implements LocationListener {
 
     private boolean CREATE = false;
     private int CURRENT_MAP_ID;
+    int counter = 0;
 
     private Activity activity;
     private final int PLAY = 1;
@@ -64,7 +66,6 @@ public class MapFragment extends Fragment implements LocationListener {
     private int TRACK_STATUS = PAUSE;
 
     private MyLocationNewOverlay mLocationOverlay;
-    private CompassOverlay mCompassOverlay;
     private ScaleBarOverlay mScaleBarOverlay;
     private RotationGestureOverlay mRotationGestureOverlay;
     protected ImageButton btCenterMap;
@@ -145,8 +146,6 @@ public class MapFragment extends Fragment implements LocationListener {
             final Context context = this.getActivity();
             final DisplayMetrics dm = activity.getResources().getDisplayMetrics();
 
-            this.mCompassOverlay = new CompassOverlay(context, new InternalCompassOrientationProvider(context),
-                    mMapView);
             this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(context),
                     mMapView);
 
@@ -164,12 +163,10 @@ public class MapFragment extends Fragment implements LocationListener {
             mMapView.setMultiTouchControls(true);
             mMapView.setFlingEnabled(true);
             mMapView.getOverlays().add(this.mLocationOverlay);
-            mMapView.getOverlays().add(this.mCompassOverlay);
             mMapView.getOverlays().add(this.mScaleBarOverlay);
             mMapView.getOverlays().add(mRotationGestureOverlay);
 
             mLocationOverlay.enableMyLocation();
-            mCompassOverlay.enableCompass();
 
             float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, 12.7f,
                     activity.getResources().getDisplayMetrics());
@@ -321,6 +318,7 @@ public class MapFragment extends Fragment implements LocationListener {
                 }
             }
 
+            System.out.println("NUMBER" + Utilities.number);
         } else {
             System.out.println("Activity is null");
         }
@@ -334,7 +332,6 @@ public class MapFragment extends Fragment implements LocationListener {
         } catch (Exception ex) {
             System.out.println("Updates error");
         }
-        mCompassOverlay.disableCompass();
         mLocationOverlay.disableFollowLocation();
         mLocationOverlay.disableMyLocation();
         mScaleBarOverlay.disableScaleBar();
@@ -393,7 +390,6 @@ public class MapFragment extends Fragment implements LocationListener {
 
         mLocationOverlay.enableFollowLocation();
         mLocationOverlay.enableMyLocation();
-        mCompassOverlay.enableCompass();
         mScaleBarOverlay.enableScaleBar();
     }
 
@@ -416,7 +412,6 @@ public class MapFragment extends Fragment implements LocationListener {
         lm = null;
         currentLocation = null;
         mLocationOverlay = null;
-        mCompassOverlay = null;
         mScaleBarOverlay = null;
         mRotationGestureOverlay = null;
         btCenterMap = null;
@@ -455,6 +450,30 @@ public class MapFragment extends Fragment implements LocationListener {
         if (markersFile.exists() && trackFile.exists()) {
             Utilities.kmlDocumentTrack.saveAsKML(trackFile);
             Utilities.kmlDocumentMarkers.saveAsKML(markersFile);
+        }
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+        if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            // Build the alert dialog
+            counter++;
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setTitle("Location is disabled");
+            builder.setMessage("Please enable your location in your device settings to use the app");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    // Show location settings when the user acknowledges the alert dialog
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+            });
+            Dialog alertDialog = builder.create();
+            alertDialog.setCanceledOnTouchOutside(false);
+            if(counter == 1) {
+                alertDialog.show();
+            }
         }
     }
 

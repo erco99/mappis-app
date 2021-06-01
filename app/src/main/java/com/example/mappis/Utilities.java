@@ -10,6 +10,8 @@ public class Utilities {
 
     static final String MAP_NAME_STRING = "/mappis_map_";
 
+    static int number = 0;
+
     static final int REQUEST_ACCESS_FINE_LOCATION = 1;
     static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2;
     static final int REQUEST_READ_EXTERNAL_STORAGE = 3;
