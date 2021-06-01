@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +32,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mappis.CardMaps.AddCardViewModel;
 import com.example.mappis.CardMaps.CardViewModel;
@@ -56,7 +56,7 @@ public class MapDetailsFragment extends Fragment {
             new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ITALY);
     private Button addButton;
     private TextInputEditText commentBox;
-    private ListView listView;
+    private RecyclerView commentList;
     private ImageView mapImageView;
     private Button deleteMapButton;
     private TextView mapNameStat;
@@ -78,7 +78,7 @@ public class MapDetailsFragment extends Fragment {
         if (activity != null) {
             commentBox = view.findViewById(R.id.commentTextInputEditText);
             addButton = view.findViewById(R.id.add_comment_button);
-            listView = view.findViewById(R.id.commentListView);
+            commentList = view.findViewById(R.id.commentListView);
             mapImageView = view.findViewById(R.id.details_map);
             deleteMapButton = view.findViewById(R.id.delete_map_button);
             mapNameStat = view.findViewById(R.id.mapNameStat);
@@ -141,8 +141,10 @@ public class MapDetailsFragment extends Fragment {
 
                 cardViewModel.getComments(cardItem.getItemId()).observe((LifecycleOwner) activity, comments -> {
                     ArrayList<Comment> list = new ArrayList<>(comments);
-                    CommentAdapter adapter = new CommentAdapter(activity, R.layout.single_comment_row, list);
-                    listView.setAdapter(adapter);
+                    CommentAdapter adapter = new CommentAdapter(list);
+                    commentList.setLayoutManager(new LinearLayoutManager(activity));
+                    commentList.setHasFixedSize(true);
+                    commentList.setAdapter(adapter);
                 });
 
                 addButton.setOnClickListener(v -> {

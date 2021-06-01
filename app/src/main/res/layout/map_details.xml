@@ -36,7 +36,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="100dp">
@@ -52,23 +52,23 @@
                 android:layout_gravity="center|top"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
+                android:clickable="true"
+                android:contentDescription="@string/clickable_image_for_map_loading"
+                android:focusable="true"
+                android:foreground="?android:attr/actionBarItemBackground"
+                android:src="@drawable/generic_map"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@drawable/generic_map"
-                android:foreground="?android:attr/actionBarItemBackground"
-                android:contentDescription="@string/clickable_image_for_map_loading" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/change_image_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Change map image"
                 android:backgroundTint="#252923"
                 android:fontFamily="@font/agave_nerd_font"
+                android:text="Change map image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/details_map" />
@@ -87,22 +87,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/change_image_button" />
 
-            <ListView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/commentListView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
+                tools:listitem="@layout/single_comment_row"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/map_comments" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="150dp"
@@ -114,10 +115,10 @@
                     android:id="@+id/commentTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/agave_nerd_font"
                     android:gravity="center"
                     android:hint="@string/add_comment"
-                    android:fontFamily="@font/agave_nerd_font"
-                    android:imeOptions="flagNoExtractUi"/>
+                    android:imeOptions="flagNoExtractUi" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,8 +130,8 @@
                 android:layout_marginEnd="30dp"
                 android:layout_weight="1"
                 android:backgroundTint="#252923"
-                android:text="@string/add"
                 android:fontFamily="@font/agave_nerd_font"
+                android:text="@string/add"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/commentListView" />
 
@@ -221,6 +222,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
