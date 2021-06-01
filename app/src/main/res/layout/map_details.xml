@@ -95,6 +95,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
                 tools:listitem="@layout/single_comment_row"
+                android:scrollbars="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/map_comments" />
