@@ -395,7 +395,9 @@ public class MapFragment extends Fragment implements LocationListener {
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        this.currentLocation = location;
+        if(location.getProvider().equals("gps")) {
+            this.currentLocation = location;
+        }
         if (this.TRACK_STATUS == this.PLAY && !newTrack) {
             trackRecorder.recordCurrentLocationInTrack("my_track" + TRACK_NUMBER,
                     "My Track" + TRACK_NUMBER, new GeoPoint(this.currentLocation), false);
