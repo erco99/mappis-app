@@ -68,8 +68,8 @@ public class IconAdder {
                 @Override
                 public void onMarkerDragEnd(Marker marker) {
                     /*GeoPoint geopoint = marker.getPosition();
-                    poiMarker.setDraggable(false);
                     */
+                    poiMarker.setDraggable(false);
 
                     KmlPlacemark kmlPlacemark = new KmlPlacemark(marker);
 

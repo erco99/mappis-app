@@ -42,8 +42,6 @@ public class MyKmlStyler implements KmlFeature.Styler {
 
     @Override
     public void onFeature(Overlay overlay, KmlFeature kmlFeature) {
-            System.out.println("sdsds" + kmlFeature.mExtendedData   );
-
     }
 
     @Override
@@ -61,14 +59,14 @@ public class MyKmlStyler implements KmlFeature.Styler {
             Style style = new Style(defaultBitmap, 0x901010AA, 3.0f, 0x2010AA10);
 
             kmlPoint.applyDefaultStyling(marker, style, kmlPlacemark, mKmlDocument, map);
-
-            if(type.equals("drag")) {
-                marker.setInfoWindow(null);
-            }
+            
         }
 
+        if(type.equals("drag")) {
+            marker.setInfoWindow(null);
+        }
 
-
+        marker.setDraggable(false);
     }
 
     @Override
@@ -110,7 +108,9 @@ public class MyKmlStyler implements KmlFeature.Styler {
     }
 
     private String getMarkerType(String str) {
-        return str.replaceAll("[^a-zA-Z ]", "");
+        str = str.replaceAll("[^a-zA-Z ]", "");
+        str = str.replaceAll("\\s","");
+        return str;
     }
 
 }
